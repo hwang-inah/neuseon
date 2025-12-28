@@ -1,13 +1,9 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* 전역 스타일 - 리셋 및 기본 설정 */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html,
@@ -17,17 +13,10 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  color: #333;
+  background-color: #F5F3EF;
+  line-height: 1.6;
 }
 
 a {
@@ -35,8 +24,43 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* 기본 버튼 스타일 */
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  min-height: 44px; /* 터치 영역 최소 높이 */
+}
+
+/* 반응형 기본 설정 */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+}
+
+/* 테이블 가로 스크롤 */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* flex 요소 wrap 처리 */
+.flex-wrap-mobile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .flex-wrap-mobile {
+    flex-direction: column;
   }
 }

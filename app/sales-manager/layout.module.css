@@ -1,0 +1,45 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #8B7355;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navLink {
+  color: #666;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: #8B7355;
+}
+
+.navLinkActive {
+  color: #8B7355;
+  font-weight: 600;
+}
+
+.main {
+  flex: 1;
+}

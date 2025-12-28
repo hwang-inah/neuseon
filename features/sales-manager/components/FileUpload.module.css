@@ -1,0 +1,40 @@
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.uploadButton {
+  padding: 0.5rem 1rem;
+  background-color: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.uploadButton:hover {
+  background-color: #1b5e20;
+}
+
+.downloadButton {
+  padding: 0.5rem 1rem;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.downloadButton:hover {
+  background-color: #1565c0;
+}
+
+.hiddenInput {
+  display: none;
+}

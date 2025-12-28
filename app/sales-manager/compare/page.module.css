@@ -1,0 +1,193 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 2rem 0;
+}
+
+.periodSelector {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+}
+
+.periodButtons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.periodButton {
+  padding: 0.6rem 1.5rem;
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.periodButton:hover {
+  background-color: #f8f9fa;
+}
+
+.periodButtonActive {
+  background-color: #8B7355;
+  color: #fff;
+  border-color: #8B7355;
+}
+
+.compareSelector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #8B7355;
+}
+
+.compareButton {
+  grid-column: 1 / -1;
+  padding: 0.75rem;
+  background-color: #8B7355;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.compareButton:hover {
+  background-color: #6d5a43;
+}
+
+.resultSection {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.resultTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 1.5rem 0;
+}
+
+.comparisonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.comparisonCard {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.cardValues {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cardLabel {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.cardAmount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.cardGrowth {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.positive {
+  color: #2e7d32;
+}
+
+.negative {
+  color: #d32f2f;
+}
+
+.neutral {
+  color: #666;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.detailTable th {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: #666;
+  font-size: 0.9rem;
+  border: 1px solid #e0e0e0;
+}
+
+.detailTable td {
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+}
