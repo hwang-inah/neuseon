@@ -28,7 +28,7 @@ export default function FileUpload({ onUpload, onDownloadCSV, onDownloadExcel, d
         📤 파일 업로드
       </button>
       
-      <button
+      {/* <button
         className={styles.downloadButton}
         onClick={onDownloadCSV}
         disabled={disabled}
@@ -42,7 +42,7 @@ export default function FileUpload({ onUpload, onDownloadCSV, onDownloadExcel, d
         disabled={disabled}
       >
         📥 엑셀
-      </button>
+      </button> */}
 
       <input
         ref={fileInputRef}

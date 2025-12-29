@@ -1,0 +1,262 @@
+// 대시보드 로직 관리 훅
+// 기간 선택, 데이터 필터링, 요약 계산
+
+import { useState, useMemo } from 'react'
+
+export function useDashboard(sales) {
+  const [period, setPeriod] = useState('thisMonth') // thisMonth, lastMonth, thisYear
+
+  // 현재 날짜 기준 계산
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = String(now.getMonth() + 1).padStart(2, '0')
+  const lastMonth = now.getMonth() === 0 
+    ? { year: currentYear - 1, month: '12' }
+    : { year: currentYear, month: String(now.getMonth()).padStart(2, '0') }
+
+  // 기간별 데이터 필터링
+  const filteredSales = useMemo(() => {
+    if (!sales || sales.length === 0) return []
+
+    return sales.filter(sale => {
+      const saleDate = sale.date
+
+      switch (period) {
+        case 'thisMonth':
+          return saleDate.startsWith(`${currentYear}-${currentMonth}`)
+        
+        case 'lastMonth':
+          return saleDate.startsWith(`${lastMonth.year}-${lastMonth.month}`)
+        
+        case 'thisYear':
+          return saleDate.startsWith(String(currentYear))
+        
+        default:
+          return true
+      }
+    })
+  }, [sales, period])
+
+  // 요약 계산
+  const summary = useMemo(() => {
+    const income = filteredSales
+      .filter(s => s.type === 'income')
+      .reduce((sum, s) => sum + s.amount, 0)
+    
+    const expense = filteredSales
+      .filter(s => s.type === 'expense')
+      .reduce((sum, s) => sum + s.amount, 0)
+    
+    const profit = income - expense
+    const profitRate = income > 0 ? (profit / income) * 100 : 0
+
+    return {
+      income,
+      expense,
+      profit,
+      profitRate
+    }
+  }, [filteredSales])
+
+  // 기간 라벨
+  const periodLabel = useMemo(() => {
+    switch (period) {
+      case 'thisMonth':
+        return `${currentYear}년 ${currentMonth}월`
+      case 'lastMonth':
+        return `${lastMonth.year}년 ${lastMonth.month}월`
+      case 'thisYear':
+        return `${currentYear}년`
+      default:
+        return ''
+    }
+  }, [period])
+
+  // 그래프 데이터 생성
+  const chartData = useMemo(() => {
+    if (period === 'thisYear') {
+      // 월별 데이터
+      const monthlyData = {}
+      
+      filteredSales.forEach(sale => {
+        const month = sale.date.substring(5, 7) // YYYY-MM-DD에서 MM 추출
+        if (!monthlyData[month]) {
+          monthlyData[month] = { income: 0, expense: 0 }
+        }
+        if (sale.type === 'income') {
+          monthlyData[month].income += sale.amount
+        } else {
+          monthlyData[month].expense += sale.amount
+        }
+      })
+
+      return Array.from({ length: 12 }, (_, i) => {
+        const month = String(i + 1).padStart(2, '0')
+        return {
+          label: `${i + 1}월`,
+          income: monthlyData[month]?.income || 0,
+          expense: monthlyData[month]?.expense || 0
+        }
+      })
+    } else {
+      // 일별 데이터
+      const dailyData = {}
+      
+      filteredSales.forEach(sale => {
+        const day = sale.date.substring(8, 10) // YYYY-MM-DD에서 DD 추출
+        if (!dailyData[day]) {
+          dailyData[day] = { income: 0, expense: 0 }
+        }
+        if (sale.type === 'income') {
+          dailyData[day].income += sale.amount
+        } else {
+          dailyData[day].expense += sale.amount
+        }
+      })
+
+      const daysInMonth = new Date(
+        period === 'thisMonth' ? currentYear : lastMonth.year,
+        period === 'thisMonth' ? parseInt(currentMonth) : parseInt(lastMonth.month),
+        0
+      ).getDate()
+
+      return Array.from({ length: daysInMonth }, (_, i) => {
+        const day = String(i + 1).padStart(2, '0')
+        return {
+          label: `${i + 1}일`,
+          income: dailyData[day]?.income || 0,
+          expense: dailyData[day]?.expense || 0
+        }
+      })
+    }
+  }, [filteredSales, period])
+
+  // 비교 그래프 데이터 (이번 달 vs 지난 달)
+  const compareData = useMemo(() => {
+    // 이번 달 데이터
+    const thisMonthSales = sales.filter(sale => 
+      sale.date.startsWith(`${currentYear}-${currentMonth}`)
+    )
+
+    // 지난 달 데이터
+    const lastMonthSales = sales.filter(sale => 
+      sale.date.startsWith(`${lastMonth.year}-${lastMonth.month}`)
+    )
+
+    const thisMonthDaily = {}
+    const lastMonthDaily = {}
+
+    thisMonthSales.forEach(sale => {
+      const day = sale.date.substring(8, 10)
+      if (!thisMonthDaily[day]) thisMonthDaily[day] = 0
+      if (sale.type === 'income') thisMonthDaily[day] += sale.amount
+    })
+
+    lastMonthSales.forEach(sale => {
+      const day = sale.date.substring(8, 10)
+      if (!lastMonthDaily[day]) lastMonthDaily[day] = 0
+      if (sale.type === 'income') lastMonthDaily[day] += sale.amount
+    })
+
+    const maxDays = Math.max(
+      new Date(currentYear, parseInt(currentMonth), 0).getDate(),
+      new Date(lastMonth.year, parseInt(lastMonth.month), 0).getDate()
+    )
+
+    return Array.from({ length: maxDays }, (_, i) => {
+      const day = String(i + 1).padStart(2, '0')
+      return {
+        label: `${i + 1}일`,
+        thisMonth: thisMonthDaily[day] || 0,
+        lastMonth: lastMonthDaily[day] || 0
+      }
+    })
+  }, [sales])
+
+  // 인사이트 생성
+  const insights = useMemo(() => {
+    const result = []
+
+    // 이번 달 데이터
+    const thisMonthIncome = sales
+      .filter(s => s.date.startsWith(`${currentYear}-${currentMonth}`) && s.type === 'income')
+      .reduce((sum, s) => sum + s.amount, 0)
+    
+    const thisMonthExpense = sales
+      .filter(s => s.date.startsWith(`${currentYear}-${currentMonth}`) && s.type === 'expense')
+      .reduce((sum, s) => sum + s.amount, 0)
+
+    // 지난 달 데이터
+    const lastMonthIncome = sales
+      .filter(s => s.date.startsWith(`${lastMonth.year}-${lastMonth.month}`) && s.type === 'income')
+      .reduce((sum, s) => sum + s.amount, 0)
+    
+    const lastMonthExpense = sales
+      .filter(s => s.date.startsWith(`${lastMonth.year}-${lastMonth.month}`) && s.type === 'expense')
+      .reduce((sum, s) => sum + s.amount, 0)
+
+    // 인사이트 1: 매출 증감
+    if (lastMonthIncome > 0) {
+      const incomeChange = ((thisMonthIncome - lastMonthIncome) / lastMonthIncome * 100).toFixed(1)
+      if (Math.abs(incomeChange) > 5) {
+        result.push({
+          icon: incomeChange > 0 ? '📈' : '📉',
+          text: `지난 달보다 매출이 ${Math.abs(incomeChange)}% ${incomeChange > 0 ? '증가' : '감소'}했어요`
+        })
+      }
+    }
+
+    // 인사이트 2: 지출 비중
+    if (thisMonthIncome > 0) {
+      const expenseRate = (thisMonthExpense / thisMonthIncome * 100).toFixed(1)
+      if (expenseRate > 70) {
+        result.push({
+          icon: '⚠️',
+          text: `이번 달 지출 비중이 ${expenseRate}%로 높습니다`
+        })
+      } else if (expenseRate < 40) {
+        result.push({
+          icon: '✨',
+          text: `지출 관리를 잘하고 계시네요! 지출 비중 ${expenseRate}%`
+        })
+      }
+    }
+
+    // 인사이트 3: 순익률
+    const thisMonthProfit = thisMonthIncome - thisMonthExpense
+    const profitRate = thisMonthIncome > 0 ? (thisMonthProfit / thisMonthIncome * 100).toFixed(1) : 0
+    
+    if (profitRate > 50) {
+      result.push({
+        icon: '🎉',
+        text: `순익률 ${profitRate}%로 매우 건강한 수익 구조입니다`
+      })
+    } else if (profitRate < 20 && profitRate > 0) {
+      result.push({
+        icon: '💡',
+        text: `순익률 ${profitRate}%입니다. 지출 최적화를 고려해보세요`
+      })
+    }
+
+    // 기본 인사이트 (데이터 부족 시)
+    if (result.length === 0) {
+      result.push({
+        icon: '📊',
+        text: '더 많은 데이터가 쌓이면 맞춤 인사이트를 제공해드릴게요'
+      })
+    }
+
+    return result
+  }, [sales])
+
+  return {
+    period,
+    setPeriod,
+    periodLabel,
+    summary,
+    filteredSales,
+    chartData,
+    compareData,
+    insights
+  }
+}

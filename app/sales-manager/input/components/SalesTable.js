@@ -19,6 +19,7 @@ export default function SalesTable({
   const [editingDate, setEditingDate] = useState(null)
   const [editData, setEditData] = useState(null)
   const [showNewRow, setShowNewRow] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(20)
   const [newData, setNewData] = useState({
     date: getToday(),
     category: '',
@@ -124,9 +125,9 @@ export default function SalesTable({
               />
             )}
 
-            {data.map(row => (
+            {data.slice(0, visibleCount).map(row => (
               <TableRow
-                key={row.date}
+                key={row.rowId}
                 mode={editingDate === row.date ? 'edit' : 'view'}
                 data={editingDate === row.date ? editData : row}
                 onDataChange={setEditData}
@@ -139,6 +140,40 @@ export default function SalesTable({
             ))}
           </tbody>
         </table>
+        
+        {/* 더보기 버튼 */}
+        {data.length > visibleCount && (
+          <div style={{ 
+            textAlign: 'center', 
+            padding: '1.5rem',
+            borderTop: '1px solid #e5e7eb'
+          }}>
+            <button
+              onClick={() => setVisibleCount(prev => prev + 20)}
+              style={{
+                padding: '0.75rem 2rem',
+                backgroundColor: '#fff',
+                border: '1px solid #8B7355',
+                borderRadius: '8px',
+                color: '#8B7355',
+                fontSize: '0.95rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#8B7355'
+                e.target.style.color = '#fff'
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = '#fff'
+                e.target.style.color = '#8B7355'
+              }}
+            >
+              + 더보기 ({data.length - visibleCount}개 남음)
+            </button>
+          </div>
+        )}
       </div>  
     </div>
   )

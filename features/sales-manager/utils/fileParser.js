@@ -200,22 +200,22 @@ export function convertToExcel(data) {
 }
 
 // CSV 다운로드
-export function downloadCSV(data, filename) {
-  const csv = convertToCSV(data)
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
-  const link = document.createElement('a')
-  const url = URL.createObjectURL(blob)
+// export function downloadCSV(data, filename) {
+//   const csv = convertToCSV(data)
+//   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+//   const link = document.createElement('a')
+//   const url = URL.createObjectURL(blob)
   
-  link.setAttribute('href', url)
-  link.setAttribute('download', filename)
-  link.style.visibility = 'hidden'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-}
+//   link.setAttribute('href', url)
+//   link.setAttribute('download', filename)
+//   link.style.visibility = 'hidden'
+//   document.body.appendChild(link)
+//   link.click()
+//   document.body.removeChild(link)
+// }
 
 // 엑셀 다운로드
-export function downloadExcel(data, filename) {
-  const workbook = convertToExcel(data)
-  XLSX.writeFile(workbook, filename)
-}
+// export function downloadExcel(data, filename) {
+//   const workbook = convertToExcel(data)
+//   XLSX.writeFile(workbook, filename)
+// }

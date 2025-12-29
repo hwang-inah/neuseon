@@ -1,92 +1,74 @@
 // 데이터 변환 유틸리티
-// DB 데이터 ↔ 화면용 데이터 변환 담당
+// DB 데이터 ↔ 화면용 데이터 변환
 
-// DB 데이터 → 화면용 데이터 변환 (날짜별 그룹화)
+/**
+ * DB → 화면 변환
+ * entry_group_id가 같은 레코드들을 1개 행으로 표시
+ */
 export function transformToTableData(sales) {
-  const grouped = {}
+  if (!sales || sales.length === 0) return []
 
+  const groups = {}
+  
+  // entry_group_id로 그룹화
   sales.forEach(sale => {
-    if (!grouped[sale.date]) {
-      grouped[sale.date] = {
+    // entry_group_id가 없는 레코드는 개별 ID 사용 (기존 데이터 처리)
+    const groupId = sale.entry_group_id || `single_${sale.id}`
+    
+    if (!groups[groupId]) {
+      groups[groupId] = {
+        rowId: groupId,
         date: sale.date,
+        category: sale.category || '',
+        vendor: sale.vendor || '',
+        description: sale.description || '',
+        memo: sale.memo || '',
         card: 0,
         transfer: 0,
         cash: 0,
-        memo: '',
-        category: '',
-        vendor: '',
-        description: '',
-        ids: {
-          card: null,
-          transfer: null,
-          cash: null
-        },
-        allIds: [] // 모든 id 저장 (삭제/수정용)
+        ids: { card: null, transfer: null, cash: null },
+        allIds: []
       }
     }
-
-    // 금액 설정
-    grouped[sale.date][sale.payment_method] = sale.amount
-    grouped[sale.date].ids[sale.payment_method] = sale.id
-    grouped[sale.date].allIds.push(sale.id)
     
-    // 추가 필드 설정 (가장 최근 값 사용)
-    if (sale.category) grouped[sale.date].category = sale.category
-    if (sale.vendor) grouped[sale.date].vendor = sale.vendor
-    if (sale.description) grouped[sale.date].description = sale.description
-    
-    // 메모 합치기
-    if (sale.memo) {
-      if (grouped[sale.date].memo) {
-        grouped[sale.date].memo += ` / ${sale.memo}`
-      } else {
-        grouped[sale.date].memo = sale.memo
-      }
-    }
+    // 결제수단별 금액과 ID 설정
+    groups[groupId][sale.payment_method] = sale.amount
+    groups[groupId].ids[sale.payment_method] = sale.id
+    groups[groupId].allIds.push(sale.id)
   })
-
-  return Object.values(grouped).sort((a, b) => b.date.localeCompare(a.date))
+  
+  // 배열로 변환 후 날짜 내림차순 정렬
+  return Object.values(groups).sort((a, b) => b.date.localeCompare(a.date))
 }
 
-// 화면용 데이터 → DB 저장용 데이터 변환
+/**
+ * 화면 → DB 변환
+ * 1개 행을 여러 DB 레코드로 분리 (결제수단별)
+ */
 export function transformToSalesData(tableRow, type) {
   const sales = []
+  const groupId = crypto.randomUUID() // 같은 입력 세션 식별용
   
-  // 공통 필드 (추가 필드 포함)
-  const commonFields = {
+  const common = {
     date: tableRow.date,
     type: type,
-    memo: tableRow.memo || '',
     category: tableRow.category || null,
     vendor: tableRow.vendor || null,
-    description: tableRow.description || null
+    description: tableRow.description || null,
+    memo: tableRow.memo || '',
+    entry_group_id: groupId
   }
 
-  // 카드 금액이 있으면 추가
   if (tableRow.card > 0) {
-    sales.push({
-      ...commonFields,
-      amount: tableRow.card,
-      payment_method: 'card'
-    })
+    sales.push({ ...common, payment_method: 'card', amount: tableRow.card })
   }
 
-  // 계좌이체 금액이 있으면 추가
   if (tableRow.transfer > 0) {
-    sales.push({
-      ...commonFields,
-      amount: tableRow.transfer,
-      payment_method: 'transfer'
-    })
+    sales.push({ ...common, payment_method: 'transfer', amount: tableRow.transfer })
   }
 
-  // 현금 금액이 있으면 추가
   if (tableRow.cash > 0) {
-    sales.push({
-      ...commonFields,
-      amount: tableRow.cash,
-      payment_method: 'cash'
-    })
+    sales.push({ ...common, payment_method: 'cash', amount: tableRow.cash })
   }
 
   return sales
