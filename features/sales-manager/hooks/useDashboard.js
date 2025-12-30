@@ -207,14 +207,15 @@ export function useDashboard(sales) {
     }
 
     // 인사이트 2: 지출 비중
-    if (thisMonthIncome > 0) {
-      const expenseRate = (thisMonthExpense / thisMonthIncome * 100).toFixed(1)
-      if (expenseRate > 70) {
+    const totalFlow = thisMonthIncome + thisMonthExpense
+    if (totalFlow > 0) {
+      const expenseRate = (thisMonthExpense / totalFlow * 100).toFixed(1)
+      if (expenseRate > 60) {
         result.push({
           icon: '⚠️',
           text: `이번 달 지출 비중이 ${expenseRate}%로 높습니다`
         })
-      } else if (expenseRate < 40) {
+      } else if (expenseRate < 30) {
         result.push({
           icon: '✨',
           text: `지출 관리를 잘하고 계시네요! 지출 비중 ${expenseRate}%`

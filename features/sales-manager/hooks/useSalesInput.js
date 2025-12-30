@@ -117,9 +117,55 @@ export function useSalesInput({
     }
   }
 
+  // 전체 삭제 (월별)
+  const handleDeleteAll = async (selectedMonth) => {
+    if (currentData.length === 0) {
+      alert('삭제할 데이터가 없습니다')
+      return
+    }
+
+    // 확인 모달
+    const result = await confirm({
+      title: '⚠️ 전체 삭제 확인',
+      message: `${selectedMonth}의 모든 ${TYPE_LABELS[activeTab]} 데이터를 삭제하시겠습니까?\n\n총 ${currentData.length}개 항목이 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.`,
+      type: 'delete',
+      confirmText: '전체 삭제',
+      cancelText: '취소'
+    })
+
+    if (!result) return
+
+    setIsSaving(true)
+
+    try {
+      // 모든 데이터의 ID 수집
+      const allIds = currentData.flatMap(row => row.allIds || Object.values(row.ids).filter(Boolean))
+      
+      if (allIds.length === 0) {
+        alert('삭제할 ID가 없습니다')
+        setIsSaving(false)
+        return
+      }
+
+      const response = await deleteSales(allIds)
+      
+      if (response.success) {
+        alert(`${currentData.length}개 항목이 삭제되었습니다`)
+      } else {
+        alert('삭제 실패: ' + response.error)
+      }
+    } catch (error) {
+      alert('삭제 중 오류가 발생했습니다')
+      console.error(error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
   return {
     handleSave,
     handleDelete,
+    handleDeleteAll,
     isSaving
   }
 }

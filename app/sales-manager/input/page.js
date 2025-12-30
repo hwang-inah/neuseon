@@ -56,9 +56,10 @@ export default function InputPage() {
   }, [monthFilter.selectedMonth])
 
   // 저장/삭제 훅
-  const { handleSave, handleDelete, isSaving } = useSalesInput({
+  const filteredData = monthFilter.getFilteredData(currentData)
+  const { handleSave, handleDelete, handleDeleteAll, isSaving } = useSalesInput({
     activeTab,
-    currentData,
+    currentData: filteredData, // 필터링된 데이터 전달
     addSales,
     deleteSales,
     confirm
@@ -80,31 +81,27 @@ export default function InputPage() {
   })
 
   // 다운로드 핸들러
-  // const handleDownloadCSV = () => {
-  //   const filteredData = monthFilter.getFilteredData(currentData)
-  //   if (filteredData.length === 0) {
-  //     alert('다운로드할 데이터가 없습니다')
-  //     return
-  //   }
-  //   const filename = `${activeTab === 'income' ? '매출' : '지출'}_${monthFilter.selectedMonth || 'all'}.csv`
-  //   downloadCSV(filteredData, filename)
-  // }
+  const handleDownloadCSV = () => {
+    if (filteredData.length === 0) {
+      alert('다운로드할 데이터가 없습니다')
+      return
+    }
+    const filename = `${activeTab === 'income' ? '매출' : '지출'}_${monthFilter.selectedMonth || 'all'}.csv`
+    downloadCSV(filteredData, filename)
+  }
 
-  // const handleDownloadExcel = () => {
-  //   const filteredData = monthFilter.getFilteredData(currentData)
-  //   if (filteredData.length === 0) {
-  //     alert('다운로드할 데이터가 없습니다')
-  //     return
-  //   }
-  //   const filename = `${activeTab === 'income' ? '매출' : '지출'}_${monthFilter.selectedMonth || 'all'}.xlsx`
-  //   downloadExcel(filteredData, filename)
-  // }
+  const handleDownloadExcel = () => {
+    if (filteredData.length === 0) {
+      alert('다운로드할 데이터가 없습니다')
+      return
+    }
+    const filename = `${activeTab === 'income' ? '매출' : '지출'}_${monthFilter.selectedMonth || 'all'}.xlsx`
+    downloadExcel(filteredData, filename)
+  }
 
   if (loading) {
     return <div className={styles.container}>로딩 중...</div>
   }
-
-  const filteredData = monthFilter.getFilteredData(currentData)
 
   return (
     <div className={styles.container}>
@@ -185,11 +182,13 @@ export default function InputPage() {
         <SalesTable
           data={filteredData}
           type={activeTab}
+          selectedMonth={monthFilter.selectedMonth}
           onSave={handleSave}
           onDelete={handleDelete}
+          onDeleteAll={handleDeleteAll}
           onFileUpload={handleFileUpload}
-          // onDownloadCSV={handleDownloadCSV}
-          // onDownloadExcel={handleDownloadExcel}
+          onDownloadCSV={handleDownloadCSV}
+          onDownloadExcel={handleDownloadExcel}
           showDetailFields={showDetailFields}
         />
       </div>

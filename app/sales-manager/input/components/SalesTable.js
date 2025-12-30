@@ -14,7 +14,9 @@ export default function SalesTable({
   onFileUpload,
   onDownloadCSV,
   onDownloadExcel,
-  showDetailFields = false // 상세 필드 표시 여부
+  showDetailFields = false,
+  selectedMonth,
+  onDeleteAll
 }) {
   const [editingDate, setEditingDate] = useState(null)
   const [editData, setEditData] = useState(null)
@@ -81,9 +83,19 @@ export default function SalesTable({
             onDownloadExcel={onDownloadExcel}
           />
           
-          <button onClick={() => setShowNewRow(true)} className={styles.addButton}>
-            + 행 추가
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            {data.length > 0 && (
+              <button 
+                onClick={() => onDeleteAll(selectedMonth)} 
+                className={styles.deleteAllButton}
+              >
+                전체 삭제
+              </button>
+            )}
+            <button onClick={() => setShowNewRow(true)} className={styles.addButton}>
+              + 행 추가
+            </button>
+          </div>
         </div>
 
         <table className={styles.table}>
@@ -140,7 +152,7 @@ export default function SalesTable({
             ))}
           </tbody>
         </table>
-        
+
         {/* 더보기 버튼 */}
         {data.length > visibleCount && (
           <div style={{ 
@@ -174,7 +186,7 @@ export default function SalesTable({
             </button>
           </div>
         )}
-      </div>  
+      </div>
     </div>
   )
 }
