@@ -11,7 +11,9 @@ export function useSalesInput({
   currentData, 
   addSales, 
   deleteSales,
-  confirm 
+  confirm,
+  showSuccess,
+  showError
 }) {
   const [isSaving, setIsSaving] = useState(false)
 
@@ -85,9 +87,18 @@ export function useSalesInput({
       
       const response = await addSales(newSales)
       if (!response.success) {
-        alert('저장 실패: ' + response.error)
+        if (showError) {
+          showError('저장 실패: ' + response.error)
+        } else {
+          alert('저장 실패: ' + response.error)
+        }
         setIsSaving(false)
         return
+      }
+      
+      // 성공 토스트
+      if (showSuccess) {
+        showSuccess(isEdit ? '수정되었습니다' : '저장되었습니다')
       }
     } finally {
       setTimeout(() => {
@@ -112,7 +123,16 @@ export function useSalesInput({
     if (idsToDelete.length > 0) {
       const response = await deleteSales(idsToDelete)
       if (!response.success) {
-        alert('삭제 실패: ' + response.error)
+        if (showError) {
+          showError('삭제 실패: ' + response.error)
+        } else {
+          alert('삭제 실패: ' + response.error)
+        }
+      } else {
+        // 성공 토스트
+        if (showSuccess) {
+          showSuccess('삭제되었습니다')
+        }
       }
     }
   }

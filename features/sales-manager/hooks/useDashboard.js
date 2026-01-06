@@ -195,8 +195,14 @@ export function useDashboard(sales) {
       .filter(s => s.date.startsWith(`${lastMonth.year}-${lastMonth.month}`) && s.type === 'expense')
       .reduce((sum, s) => sum + s.amount, 0)
 
-    // 인사이트 1: 매출 증감
-    if (lastMonthIncome > 0) {
+    // 인사이트 1: 이번 달 데이터 확인
+    if (thisMonthIncome === 0 && thisMonthExpense === 0) {
+      result.push({
+        icon: '✍️',
+        text: `이번 달(${currentMonth}월) 매출 데이터를 입력해주세요`
+      })
+    } else if (lastMonthIncome > 0 && thisMonthIncome > 0) {
+      // 지난 달과 이번 달 모두 데이터가 있을 때만 비교
       const incomeChange = ((thisMonthIncome - lastMonthIncome) / lastMonthIncome * 100).toFixed(1)
       if (Math.abs(incomeChange) > 5) {
         result.push({
@@ -206,37 +212,35 @@ export function useDashboard(sales) {
       }
     }
 
-    // 인사이트 2: 지출 비중
-    const totalFlow = thisMonthIncome + thisMonthExpense
-    if (totalFlow > 0) {
-      const expenseRate = (thisMonthExpense / totalFlow * 100).toFixed(1)
-      if (expenseRate > 60) {
+    // 인사이트 2: 지출 비중 변화 (지난달 대비)
+    if (thisMonthIncome > 0 && thisMonthExpense > 0 && lastMonthIncome > 0 && lastMonthExpense > 0) {
+      const thisExpenseRate = (thisMonthExpense / (thisMonthIncome + thisMonthExpense) * 100)
+      const lastExpenseRate = (lastMonthExpense / (lastMonthIncome + lastMonthExpense) * 100)
+      const rateChange = thisExpenseRate - lastExpenseRate
+      
+      if (Math.abs(rateChange) > 5) {
         result.push({
-          icon: '⚠️',
-          text: `이번 달 지출 비중이 ${expenseRate}%로 높습니다`
-        })
-      } else if (expenseRate < 30) {
-        result.push({
-          icon: '✨',
-          text: `지출 관리를 잘하고 계시네요! 지출 비중 ${expenseRate}%`
+          icon: rateChange < 0 ? '✨' : '⚠️',
+          text: `지출 비중이 지난 달 ${lastExpenseRate.toFixed(1)}%에서 ${thisExpenseRate.toFixed(1)}%로 ${rateChange > 0 ? '증가' : '감소'}했어요`
         })
       }
     }
 
-    // 인사이트 3: 순익률
-    const thisMonthProfit = thisMonthIncome - thisMonthExpense
-    const profitRate = thisMonthIncome > 0 ? (thisMonthProfit / thisMonthIncome * 100).toFixed(1) : 0
-    
-    if (profitRate > 50) {
-      result.push({
-        icon: '🎉',
-        text: `순익률 ${profitRate}%로 매우 건강한 수익 구조입니다`
-      })
-    } else if (profitRate < 20 && profitRate > 0) {
-      result.push({
-        icon: '💡',
-        text: `순익률 ${profitRate}%입니다. 지출 최적화를 고려해보세요`
-      })
+    // 인사이트 3: 순익률 변화 (지난달 대비)
+    if (thisMonthIncome > 0 && lastMonthIncome > 0) {
+      const thisMonthProfit = thisMonthIncome - thisMonthExpense
+      const lastMonthProfit = lastMonthIncome - lastMonthExpense
+      
+      const thisProfitRate = (thisMonthProfit / thisMonthIncome * 100)
+      const lastProfitRate = (lastMonthProfit / lastMonthIncome * 100)
+      const profitChange = thisProfitRate - lastProfitRate
+      
+      if (Math.abs(profitChange) > 5) {
+        result.push({
+          icon: profitChange > 0 ? '🎉' : '💡',
+          text: `순익률이 지난 달 ${lastProfitRate.toFixed(1)}%에서 ${thisProfitRate.toFixed(1)}%로 ${profitChange > 0 ? '개선됐어요' : '하락했어요'}`
+        })
+      }
     }
 
     // 기본 인사이트 (데이터 부족 시)

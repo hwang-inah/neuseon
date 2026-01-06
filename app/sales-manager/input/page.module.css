@@ -312,3 +312,29 @@
     border-radius: 12px;
   }
 }
+
+/* 다중 입력 버튼 */
+.bulkInputSection {
+  margin-bottom: 1.5rem;
+}
+
+.bulkInputButton {
+  padding: 0.75rem 1.5rem;
+  background: #8B7355;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bulkInputButton:hover {
+  background: #6F5B44;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+}

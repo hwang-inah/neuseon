@@ -134,3 +134,20 @@
   background: #dc2626;
   color: white;
 }
+
+/* 다중 입력 버튼 */
+.bulkButton {
+  padding: 0.5rem 1rem;
+  background: #8B7355;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bulkButton:hover {
+  background: #6F5B44;
+}

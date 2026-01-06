@@ -4,42 +4,105 @@
   flex-direction: column;
 }
 
-.header {
+/* 서브 네비 (2차 네비) */
+.subNav {
   background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
-  padding: 1rem 2rem;
+  padding: 0.75rem 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #8B7355;
-}
-
-.nav {
-  display: flex;
   gap: 2rem;
-  align-items: center;
+  position: sticky;
+  top: 56px; /* 전역 헤더 높이 */
+  z-index: 99;
 }
 
-.navLink {
+.subNavLink {
   color: #666;
   font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.5rem 0;
+  text-decoration: none;
   transition: color 0.2s;
+  position: relative;
 }
 
-.navLink:hover {
+.subNavLink:hover {
   color: #8B7355;
 }
 
-.navLinkActive {
+.subNavLinkActive {
   color: #8B7355;
   font-weight: 600;
 }
 
+.subNavLinkActive::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #8B7355;
+}
+
 .main {
   flex: 1;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userEmail {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.logoutButton {
+  padding: 0.5rem 1rem;
+  background: white;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logoutButton:hover {
+  background: #f9fafb;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+/* 로딩 스피너 */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #8B7355;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingContainer p {
+  color: #666;
+  font-size: 1rem;
 }

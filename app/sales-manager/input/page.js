@@ -8,8 +8,13 @@ import { useConfirm } from '@/features/sales-manager/hooks/useConfirm'
 import { useMonthFilter } from '@/features/sales-manager/hooks/useMonthFilter'
 import { useSalesInput } from '@/features/sales-manager/hooks/useSalesInput'
 import { useFileUpload } from '@/features/sales-manager/hooks/useFileUpload'
+import { useToast } from '@/shared/hooks/useToast'
+import { useDraftSave } from '@/features/sales-manager/hooks/useDraftSave'
+import Toast from '@/shared/components/Toast'
+import DraftBanner from '@/features/sales-manager/components/DraftBanner'
 import ConfirmModal from '@/features/sales-manager/components/ConfirmModal'
 import SalesTable from './components/SalesTable'
+import BulkInputModal from './components/BulkInputModal'
 import { transformToTableData } from '@/features/sales-manager/utils/dataTransform'
 // import { downloadCSV, downloadExcel } from '@/features/sales-manager/utils/fileParser'
 import styles from './page.module.css'
@@ -17,8 +22,11 @@ import styles from './page.module.css'
 export default function InputPage() {
   const { sales, loading, addSales, deleteSales } = useSalesData()
   const { isOpen, config, confirm, handleConfirm, handleCancel } = useConfirm()
+  const { toast, showSuccess, showError, showInfo, hideToast } = useToast()
+  const { hasDraft, draftData, saveDraft, clearDraft, dismissDraft } = useDraftSave()
 
   const [activeTab, setActiveTab] = useState('income')
+  const [showBulkModal, setShowBulkModal] = useState(false)
   const [incomeData, setIncomeData] = useState([])
   const [expenseData, setExpenseData] = useState([])
   const [showDetailFields, setShowDetailFields] = useState(false)
@@ -62,7 +70,9 @@ export default function InputPage() {
     currentData: filteredData, // 필터링된 데이터 전달
     addSales,
     deleteSales,
-    confirm
+    confirm,
+    showSuccess,
+    showError
   })
 
   // 파일 업로드 훅
@@ -99,13 +109,90 @@ export default function InputPage() {
     downloadExcel(filteredData, filename)
   }
 
+  // 다중 입력 저장
+  const handleBulkSave = async (rows) => {
+    try {
+      const salesData = rows.flatMap(row => {
+        const items = []
+        
+        if (parseFloat(row.card) > 0) {
+          items.push({
+            date: row.date,
+            type: activeTab,
+            payment_method: 'card',
+            amount: parseFloat(row.card),
+            memo: row.memo || null
+          })
+        }
+        
+        if (parseFloat(row.transfer) > 0) {
+          items.push({
+            date: row.date,
+            type: activeTab,
+            payment_method: 'transfer',
+            amount: parseFloat(row.transfer),
+            memo: row.memo || null
+          })
+        }
+        
+        if (parseFloat(row.cash) > 0) {
+          items.push({
+            date: row.date,
+            type: activeTab,
+            payment_method: 'cash',
+            amount: parseFloat(row.cash),
+            memo: row.memo || null
+          })
+        }
+        
+        return items
+      })
+
+      const response = await addSales(salesData)
+      
+      if (response.success) {
+        showSuccess(`${salesData.length}개 항목이 저장되었습니다`)
+        setShowBulkModal(false)
+      } else {
+        showError('저장 실패: ' + response.error)
+      }
+    } catch (error) {
+      showError('저장 중 오류가 발생했습니다')
+      console.error(error)
+    }
+  }
+
   if (loading) {
     return <div className={styles.container}>로딩 중...</div>
   }
 
   return (
     <div className={styles.container}>
+      {/* 토스트 알림 */}
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={hideToast} 
+        />
+      )}
+
       <h1 className={styles.title}>입력하기</h1>
+
+      {/* 임시저장 알림 */}
+      {hasDraft && (
+        <DraftBanner
+          onRestore={() => {
+            showSuccess('임시저장 데이터를 불러왔습니다')
+            // TODO: 테이블에 데이터 복원 로직 추가
+            dismissDraft()
+          }}
+          onDismiss={() => {
+            clearDraft()
+            showInfo('임시저장 데이터를 삭제했습니다')
+          }}
+        />
+      )}
 
       {/* 탭 */}
       <div className={styles.tabs}>
@@ -186,6 +273,7 @@ export default function InputPage() {
           onSave={handleSave}
           onDelete={handleDelete}
           onDeleteAll={handleDeleteAll}
+          onBulkInput={() => setShowBulkModal(true)}
           onFileUpload={handleFileUpload}
           onDownloadCSV={handleDownloadCSV}
           onDownloadExcel={handleDownloadExcel}
@@ -200,6 +288,15 @@ export default function InputPage() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
+
+      {/* 다중 입력 모달 */}
+      {showBulkModal && (
+        <BulkInputModal
+          type={activeTab}
+          onClose={() => setShowBulkModal(false)}
+          onSave={handleBulkSave}
+        />
+      )}
     </div>
   )
 }

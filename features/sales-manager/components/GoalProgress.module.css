@@ -1,0 +1,134 @@
+.container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.progressSection {
+  margin-bottom: 2rem;
+}
+
+.progressSection:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.percentage {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #8B7355;
+}
+
+.amounts {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.current {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.divider {
+  font-size: 1rem;
+  color: #9ca3af;
+}
+
+.goal {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.progressBar {
+  width: 100%;
+  height: 12px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #8B7355, #a89176);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+/* 일 평균 통계 */
+.dailyStats {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.dailyItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dailyLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.dailyValue {
+  font-size: 1rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* 빈 상태 */
+.empty {
+  background: white;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  color: #9ca3af;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 반응형 */
+@media (max-width: 640px) {
+  .dailyStats {
+    grid-template-columns: 1fr;
+  }
+
+  .current {
+    font-size: 1.25rem;
+  }
+}

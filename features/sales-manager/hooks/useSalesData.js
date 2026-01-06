@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { TEMP_USER_ID } from '@/constants/common'
+import { useAuth } from '@/shared/contexts/AuthContext'
 
 export function useSalesData() {
+  const { user } = useAuth()
   const [sales, setSales] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -13,18 +14,22 @@ export function useSalesData() {
   const fetchSales = async () => {
     try {
       setLoading(true)
+      
+      if (!user) {
+        setSales([])
+        setLoading(false)
+        return
+      }
+      
       const { data, error } = await supabase
         .from('sales')
         .select('*')
-        .eq('user_id', TEMP_USER_ID)
+        .eq('user_id', user.id)
         .order('date', { ascending: false })
 
       if (error) throw error
       
-      // 새 배열로 강제 업데이트
       setSales([...(data || [])])
-      
-      console.log('fetchSales 완료, 데이터 개수:', data?.length || 0)
     } catch (err) {
       setError(err.message)
       console.error('Error fetching sales:', err)
@@ -36,10 +41,12 @@ export function useSalesData() {
   // 추가 (단일)
   const addSale = async (saleData) => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const { data, error } = await supabase
         .from('sales')
         .insert([{
-          user_id: TEMP_USER_ID,
+          user_id: user.id,
           ...saleData
         }])
         .select()
@@ -53,11 +60,13 @@ export function useSalesData() {
     }
   }
 
-  // 추가 (복수) - 새로 추가!
+  // 추가 (복수)
   const addSales = async (salesData) => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const dataToInsert = salesData.map(sale => ({
-        user_id: TEMP_USER_ID,
+        user_id: user.id,
         ...sale
       }))
 
@@ -67,8 +76,6 @@ export function useSalesData() {
         .select()
 
       if (error) throw error
-      
-      // 즉시 새로고침
       await fetchSales()
       
       return { success: true, data }
@@ -81,11 +88,13 @@ export function useSalesData() {
   // 수정
   const updateSale = async (id, saleData) => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const { data, error } = await supabase
         .from('sales')
         .update(saleData)
         .eq('id', id)
-        .eq('user_id', TEMP_USER_ID)
+        .eq('user_id', user.id)
         .select()
 
       if (error) throw error
@@ -100,11 +109,13 @@ export function useSalesData() {
   // 삭제 (단일)
   const deleteSale = async (id) => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const { error } = await supabase
         .from('sales')
         .delete()
         .eq('id', id)
-        .eq('user_id', TEMP_USER_ID)
+        .eq('user_id', user.id)
 
       if (error) throw error
       await fetchSales()
@@ -118,11 +129,13 @@ export function useSalesData() {
   // 선택 삭제 (여러 개)
   const deleteSales = async (ids) => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const { error } = await supabase
         .from('sales')
         .delete()
         .in('id', ids)
-        .eq('user_id', TEMP_USER_ID)
+        .eq('user_id', user.id)
 
       if (error) throw error
       await fetchSales()
@@ -136,10 +149,12 @@ export function useSalesData() {
   // 기간별 삭제
   const deleteSalesByPeriod = async (startDate, endDate) => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const { error } = await supabase
         .from('sales')
         .delete()
-        .eq('user_id', TEMP_USER_ID)
+        .eq('user_id', user.id)
         .gte('date', startDate)
         .lte('date', endDate)
 
@@ -155,10 +170,12 @@ export function useSalesData() {
   // 전체 삭제
   const deleteAllSales = async () => {
     try {
+      if (!user) throw new Error('로그인이 필요합니다')
+
       const { error } = await supabase
         .from('sales')
         .delete()
-        .eq('user_id', TEMP_USER_ID)
+        .eq('user_id', user.id)
 
       if (error) throw error
       await fetchSales()
@@ -171,7 +188,7 @@ export function useSalesData() {
 
   useEffect(() => {
     fetchSales()
-  }, [])
+  }, [user]) // user 변경 시 데이터 다시 가져오기
 
   return {
     sales,
@@ -179,7 +196,7 @@ export function useSalesData() {
     error,
     fetchSales,
     addSale,
-    addSales, // 새로 추가!
+    addSales,
     updateSale,
     deleteSale,
     deleteSales,

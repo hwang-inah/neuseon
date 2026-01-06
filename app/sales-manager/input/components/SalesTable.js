@@ -16,7 +16,8 @@ export default function SalesTable({
   onDownloadExcel,
   showDetailFields = false,
   selectedMonth,
-  onDeleteAll
+  onDeleteAll,
+  onBulkInput
 }) {
   const [editingDate, setEditingDate] = useState(null)
   const [editData, setEditData] = useState(null)
@@ -84,6 +85,14 @@ export default function SalesTable({
           />
           
           <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button onClick={() => setShowNewRow(true)} className={styles.addButton}>
+              + 행 추가
+            </button>
+            {onBulkInput && (
+              <button onClick={onBulkInput} className={styles.bulkButton}>
+                📝 다중 입력
+              </button>
+            )}
             {data.length > 0 && (
               <button 
                 onClick={() => onDeleteAll(selectedMonth)} 
@@ -92,9 +101,6 @@ export default function SalesTable({
                 전체 삭제
               </button>
             )}
-            <button onClick={() => setShowNewRow(true)} className={styles.addButton}>
-              + 행 추가
-            </button>
           </div>
         </div>
 
@@ -186,7 +192,7 @@ export default function SalesTable({
             </button>
           </div>
         )}
-      </div>
+      </div>  
     </div>
   )
 }

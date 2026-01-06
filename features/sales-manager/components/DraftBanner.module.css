@@ -1,0 +1,73 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FEF3C7;
+  border: 1px solid #FCD34D;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon {
+  font-size: 1.25rem;
+}
+
+.text {
+  color: #92400E;
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.restoreButton,
+.dismissButton {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.restoreButton {
+  background: #8B7355;
+  color: white;
+  border: none;
+}
+
+.restoreButton:hover {
+  background: #6F5B44;
+}
+
+.dismissButton {
+  background: white;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}
+
+.dismissButton:hover {
+  background: #FEF3C7;
+}
