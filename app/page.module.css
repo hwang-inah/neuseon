@@ -1,5 +1,5 @@
 .container {
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,41 +19,94 @@
   color: #333;
 }
 
-.subtitle {
-  font-size: 1.2rem;
-  color: #666;
-  margin: 0;
-}
-
 .services {
   display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  gap: 24px;
   justify-content: center;
+  align-items: flex-start; /* stretch 대신 시작점 정렬 */
+  margin-top: 56px;
 }
 
+/* 카드: 아주 약한 배경/테두리로 덩어리감 */
+.serviceCard {
+  width: 300px;
+  padding: 22px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 문구: 2줄 제한 + 높이 고정으로 버튼 정렬 안정화 */
+.serviceCopy {
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #3b3b3b;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  min-height: 42px; /* 2줄 높이 고정 (핵심) */
+}
+
+/* 버튼: 카드보다 살짝 좁게 */
 .serviceButton {
-  display: block;
-  padding: 2rem 3rem;
+  width: 94%;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background-color: #8B7355;
   color: #fff;
   border-radius: 16px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
-  transition: transform 0.2s;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+
+  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.22);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .serviceButton:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(139, 115, 85, 0.18);
+}
+
+/* 준비중: 존재감 낮추기 */
+.serviceCardDisabled {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.035);
+  box-shadow: none;
+  opacity: 0.75;
+}
+
+.serviceCardDisabled .serviceCopy {
+  color: #8c8c8c;
 }
 
 .serviceDisabled {
-  padding: 2rem 3rem;
-  background-color: #ddd;
-  color: #999;
+  width: 94%;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #dedede;
+  color: #8c8c8c;
   border-radius: 16px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  cursor: not-allowed;
+  font-size: 18px;
+  font-weight: 700;
 }
