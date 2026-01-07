@@ -72,9 +72,12 @@ export default function CompareTable({
         <h2 className={styles.title}>전월대비 지출 비교 (항목별)</h2>
         
         <select 
+          id="compare-table-column"
+          name="compareColumn"
           className={styles.select}
           value={selectedColumn}
           onChange={(e) => setSelectedColumn(e.target.value)}
+          aria-label="비교 컬럼 선택"
         >
           {COLUMN_OPTIONS.map(option => (
             <option key={option.value} value={option.value}>
