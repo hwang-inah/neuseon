@@ -136,46 +136,61 @@ export default function BulkInputModal({ type, onClose, onSave }) {
                   <tr key={row.id}>
                     <td>
                       <input
+                        id={`bulk-${row.id}-date`}
+                        name={`bulk_date_${row.id}`}
                         type="date"
                         value={row.date}
                         onChange={(e) => handleChange(row.id, 'date', e.target.value)}
                         className={styles.input}
+                        aria-label={`${row.id}번 행 날짜`}
                       />
                     </td>
                     <td>
                       <input
+                        id={`bulk-${row.id}-card`}
+                        name={`bulk_card_${row.id}`}
                         type="number"
                         value={row.card}
                         onChange={(e) => handleChange(row.id, 'card', e.target.value)}
                         placeholder="0"
                         className={styles.input}
+                        aria-label={`${row.id}번 행 카드`}
                       />
                     </td>
                     <td>
                       <input
+                        id={`bulk-${row.id}-transfer`}
+                        name={`bulk_transfer_${row.id}`}
                         type="number"
                         value={row.transfer}
                         onChange={(e) => handleChange(row.id, 'transfer', e.target.value)}
                         placeholder="0"
                         className={styles.input}
+                        aria-label={`${row.id}번 행 계좌이체`}
                       />
                     </td>
                     <td>
                       <input
+                        id={`bulk-${row.id}-cash`}
+                        name={`bulk_cash_${row.id}`}
                         type="number"
                         value={row.cash}
                         onChange={(e) => handleChange(row.id, 'cash', e.target.value)}
                         placeholder="0"
                         className={styles.input}
+                        aria-label={`${row.id}번 행 현금`}
                       />
                     </td>
                     <td>
                       <input
+                        id={`bulk-${row.id}-memo`}
+                        name={`bulk_memo_${row.id}`}
                         type="text"
                         value={row.memo}
                         onChange={(e) => handleChange(row.id, 'memo', e.target.value)}
                         placeholder="메모"
                         className={styles.input}
+                        aria-label={`${row.id}번 행 메모`}
                       />
                     </td>
                     <td>

@@ -22,6 +22,7 @@ export default function TalkForm({
         </label>
         <textarea
           id="conversationText"
+          name="conversationText"
           value={conversationText}
           onChange={onConversationTextChange}
           rows={10}
@@ -37,6 +38,7 @@ export default function TalkForm({
         </label>
         <select
           id="relationshipType"
+          name="relationshipType"
           value={relationshipType}
           onChange={onRelationshipTypeChange}
           className={styles.select}
@@ -58,6 +60,7 @@ export default function TalkForm({
         </label>
         <select
           id="userGoal"
+          name="userGoal"
           value={userGoal}
           onChange={onUserGoalChange}
           className={styles.select}

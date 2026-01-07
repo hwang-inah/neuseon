@@ -90,8 +90,10 @@ export default function GoalInput({
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>매출 목표</label>
+        <label htmlFor={`${goalType}-${year}-${month || 'yearly'}-income`} className={styles.label}>매출 목표</label>
         <input
+          id={`${goalType}-${year}-${month || 'yearly'}-income`}
+          name={`${goalType}_income_goal`}
           type="text"
           className={styles.input}
           value={incomeGoal}
@@ -104,8 +106,10 @@ export default function GoalInput({
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>순익 목표</label>
+        <label htmlFor={`${goalType}-${year}-${month || 'yearly'}-profit`} className={styles.label}>순익 목표</label>
         <input
+          id={`${goalType}-${year}-${month || 'yearly'}-profit`}
+          name={`${goalType}_profit_goal`}
           type="text"
           className={styles.input}
           value={profitGoal}

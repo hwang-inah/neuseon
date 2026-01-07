@@ -58,83 +58,110 @@ export default function TableRow({
   // Edit 또는 New 모드
   const isNew = mode === 'new'
   
+  // 고유 ID 생성 (rowId가 있으면 사용, 없으면 date 기반)
+  const rowId = data.rowId || `row-${data.date || 'new'}-${isNew ? 'new' : 'edit'}`
+
   return (
     <tr className={isNew ? styles.newRow : ''}>
       <td>
         <input
+          id={`${rowId}-date`}
+          name="date"
           type="date"
           className={styles.input}
           value={data.date || ''}
           onChange={(e) => handleChange('date', e.target.value)}
+          aria-label="일자"
         />
       </td>
       {showDetailFields && (
         <>
           <td>
             <input
+              id={`${rowId}-category`}
+              name="category"
               type="text"
               className={styles.input}
               placeholder="구분"
               value={data.category || ''}
               onChange={(e) => handleChange('category', e.target.value)}
+              aria-label="구분"
             />
           </td>
           <td>
             <input
+              id={`${rowId}-vendor`}
+              name="vendor"
               type="text"
               className={styles.input}
               placeholder="거래처명"
               value={data.vendor || ''}
               onChange={(e) => handleChange('vendor', e.target.value)}
+              aria-label="거래처명"
             />
           </td>
           <td>
             <input
+              id={`${rowId}-description`}
+              name="description"
               type="text"
               className={styles.input}
               placeholder="내용"
               value={data.description || ''}
               onChange={(e) => handleChange('description', e.target.value)}
+              aria-label="내용"
             />
           </td>
         </>
       )}
       <td>
         <input
+          id={`${rowId}-card`}
+          name="card"
           type="text"
           className={styles.input}
           placeholder="0"
           value={data.card || ''}
           onChange={(e) => handleChange('card', e.target.value)}
+          aria-label="카드"
         />
       </td>
       <td>
         <input
+          id={`${rowId}-transfer`}
+          name="transfer"
           type="text"
           className={styles.input}
           placeholder="0"
           value={data.transfer || ''}
           onChange={(e) => handleChange('transfer', e.target.value)}
+          aria-label="계좌이체"
         />
       </td>
       <td>
         <input
+          id={`${rowId}-cash`}
+          name="cash"
           type="text"
           className={styles.input}
           placeholder="0"
           value={data.cash || ''}
           onChange={(e) => handleChange('cash', e.target.value)}
+          aria-label="현금"
         />
       </td>
       <td className={styles.totalAmount}>{formatCurrency(total)}</td>
       
       <td>
         <input
+          id={`${rowId}-memo`}
+          name="memo"
           type="text"
           className={styles.input}
           placeholder="메모"
           value={data.memo || ''}
           onChange={(e) => handleChange('memo', e.target.value)}
+          aria-label="메모"
         />
       </td>
       <td>
