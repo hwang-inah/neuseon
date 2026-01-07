@@ -58,7 +58,7 @@ export default function LousseHeader() {
     <>
       <header className={styles.header}>
         <Link href="/" className={styles.logo}>
-          neuseon
+          neuseun
         </Link>
 
         <div className={styles.userSection}>

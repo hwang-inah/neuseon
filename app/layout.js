@@ -5,7 +5,7 @@ import { AuthProvider } from '@/shared/contexts/AuthContext'
 import LousseHeader from '@/shared/components/LousseHeader/LousseHeader'
 
 export const metadata = {
-  title: 'NEUSEON',
+  title: 'NEUSEUN',
   description: '쌓이면, 보이게 됩니다.',
 }
 

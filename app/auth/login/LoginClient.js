@@ -121,7 +121,7 @@ export default function LoginClient() {
   return (
     <div className={styles.container}>
       <div className={styles.loginCard}>
-        <h1 className={styles.logo}>neuseon</h1>
+        <h1 className={styles.logo}>neuseun</h1>
         <p className={styles.subtitle}>서비스 이용을 위해 로그인하세요</p>
 
         {error && <div className={styles.error}>{error}</div>}

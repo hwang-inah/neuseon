@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>NEUSEON</h1>
+        <h1 className={styles.title}>NEUSEUN</h1>
         <p className={styles.subtitle}>쌓이면, 보이게 됩니다.</p>
       </div>
 
