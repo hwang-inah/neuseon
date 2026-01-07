@@ -2,52 +2,82 @@
 // -----------------------------------------------------------------------------
 // [역할] /auth/login 페이지의 실제 UI + 로그인 로직 (Client Component)
 //
-// 이 파일은 브라우저 환경에서만 동작해야 하는 기능을 포함합니다.
+// 브라우저 전용 기능을 사용합니다.
 // - URL 쿼리 파라미터 접근(useSearchParams)
 // - sessionStorage 사용
 // - window.location 접근
 // - Supabase OAuth 로그인 트리거
 //
-// 따라서 파일 상단에 'use client'를 선언합니다.
-//
 // [주요 기능]
-// 1) URL 쿼리의 error 값을 해석하여 사용자에게 에러 메시지를 표시
+// 1) URL 쿼리의 error 값을 해석하여 사용자에게 에러 메시지 표시
 // 2) redirectTo 우선순위 규칙에 따라 로그인 후 이동 경로를 sessionStorage에 저장
-// 3) Google OAuth 로그인(supabase.auth.signInWithOAuth) 실행
+// 3) Google OAuth 로그인 실행 (supabase.auth.signInWithOAuth)
+// 4) 모바일 인앱 브라우저(네이버/카톡/인스타 등)에서 Google 로그인이 차단될 수 있어 안내 표시
 // -----------------------------------------------------------------------------
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import styles from './page.module.css'
 
+// -----------------------------------------------------------------------------
+// [유틸] 인앱 브라우저 감지
+// - 네이버/카톡/인스타/페북 등 앱 내 WebView에서는 Google OAuth가 정책상 차단될 수 있음
+// - 차단 시 Google에서 403 disallowed_useragent 발생
+// -----------------------------------------------------------------------------
+function detectInAppBrowser() {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent.toLowerCase()
+
+  // 대표 인앱/웹뷰 패턴 (필요시 확장 가능)
+  return (
+    ua.includes('naver') ||
+    ua.includes('kakaotalk') ||
+    ua.includes('instagram') ||
+    ua.includes('fbav') ||
+    ua.includes('fban') ||
+    ua.includes('line') ||
+    ua.includes('wv') // Android WebView 흔한 표식
+  )
+}
+
+// -----------------------------------------------------------------------------
+// [유틸] 내부 경로만 허용 (오픈 리다이렉트 방지)
+// - "/"로 시작하는 내부 경로만 인정
+// -----------------------------------------------------------------------------
+function isValidInternalPath(path) {
+  return typeof path === 'string' && path.startsWith('/')
+}
+
 export default function LoginClient() {
-  // ---------------------------------------------------------------------------
-  // [기능] URL 쿼리 파라미터 접근
-  // - 예: /auth/login?redirectTo=/sales
-  // - 예: /auth/login?error=callback_failed
-  // ---------------------------------------------------------------------------
   const searchParams = useSearchParams()
 
-  // ---------------------------------------------------------------------------
-  // [상태] UI 상태 관리
-  // - loading: OAuth 로그인 요청 진행 여부(버튼 비활성/문구 변경)
-  // - error: 사용자에게 보여줄 오류 메시지
-  // ---------------------------------------------------------------------------
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [isInApp, setIsInApp] = useState(false)
+
+  // 인앱 브라우저 감지 (1회)
+  useEffect(() => {
+    setIsInApp(detectInAppBrowser())
+  }, [])
 
   // ---------------------------------------------------------------------------
   // [기능 1] URL 쿼리의 error 값을 해석하여 사용자에게 오류 안내
-  // - /auth/callback 처리 과정에서 문제가 발생했을 때
-  //   /auth/login?error=callback_failed 형태로 다시 돌아오게 되는 경우를 가정
+  // - /auth/callback 처리 중 실패 → /auth/login?error=callback_failed 로 돌아오는 시나리오
   // ---------------------------------------------------------------------------
   useEffect(() => {
     const errorParam = searchParams.get('error')
+
     if (errorParam === 'callback_failed') {
-      setError('로그인 처리 중 문제가 발생했습니다. 다시 시도해주세요.')
+      setError('로그인 처리 중 문제가 발생했습니다. 브라우저(Safari/Chrome)에서 다시 시도해주세요.')
+      return
+    }
+
+    // 다른 에러 파라미터가 있다면 여기에 추가로 매핑 가능
+    if (errorParam) {
+      setError('로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
     }
   }, [searchParams])
 
@@ -59,23 +89,22 @@ export default function LoginClient() {
   //  (2) 기존 sessionStorage에 저장된 auth_redirectTo
   //  (3) 기본값 "/"
   //
-  // [보안/안전]
-  //  - 오픈 리다이렉트 방지: 외부 URL(https://...)을 허용하지 않고
-  //    반드시 "/"로 시작하는 내부 경로만 허용합니다.
+  // [보안]
+  //  - 외부 URL(https://...) 등은 허용하지 않고 "/"로 시작하는 내부 경로만 허용
   // ---------------------------------------------------------------------------
   useEffect(() => {
+    // 1) URL query에서 redirectTo 확인
     const queryRedirectTo = searchParams.get('redirectTo')
-    const existingRedirectTo = sessionStorage.getItem('auth_redirectTo')
 
-    // 내부 경로만 허용 (/로 시작하는 경로)
-    const isValidPath = (path) =>
-      path && typeof path === 'string' && path.startsWith('/')
+    // 2) 기존 sessionStorage에 저장된 값 확인 (있으면 유지)
+    const existingRedirectTo =
+      typeof window !== 'undefined' ? sessionStorage.getItem('auth_redirectTo') : null
 
     let finalRedirectTo = '/'
 
-    if (queryRedirectTo && isValidPath(queryRedirectTo)) {
+    if (queryRedirectTo && isValidInternalPath(queryRedirectTo)) {
       finalRedirectTo = queryRedirectTo
-    } else if (existingRedirectTo && isValidPath(existingRedirectTo)) {
+    } else if (existingRedirectTo && isValidInternalPath(existingRedirectTo)) {
       finalRedirectTo = existingRedirectTo
     }
 
@@ -84,19 +113,23 @@ export default function LoginClient() {
 
   // ---------------------------------------------------------------------------
   // [기능 3] Google OAuth 로그인 실행 (Supabase)
-  //
-  // - 사용자가 "Google로 시작하기" 버튼을 누르면 실행됩니다.
-  // - Supabase가 Google 로그인 페이지로 리다이렉트합니다.
-  // - 로그인 성공 후에는 options.redirectTo로 지정한 콜백 URL로 돌아옵니다.
-  //   여기서는 /auth/callback 로 설정되어 있습니다.
-  //
-  // 참고:
-  // - window.location.origin은 브라우저에서만 존재하므로 Client Component에서만 사용합니다.
+  // - 인앱 브라우저에서는 Google 정책으로 차단될 수 있어 안내 후 진행
+  // - redirectTo는 현재 도메인 기준(/auth/callback)으로 설정
   // ---------------------------------------------------------------------------
   const handleGoogleLogin = async () => {
     try {
-      setLoading(true)
       setError(null)
+
+      // 인앱 브라우저에서는 실패 가능성이 높으므로 사전 경고
+      if (isInApp) {
+        // 사용자가 원하면 그대로 시도할 수 있게 confirm 형태로 처리
+        const proceed = window.confirm(
+          '현재 인앱 브라우저(네이버/카카오 등)에서는 Google 로그인이 차단될 수 있습니다.\n\nSafari(또는 Chrome)에서 열어 로그인하는 것을 권장합니다.\n\n그래도 계속 진행할까요?'
+        )
+        if (!proceed) return
+      }
+
+      setLoading(true)
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -113,25 +146,34 @@ export default function LoginClient() {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // [UI] 로그인 화면 렌더링
-  // - 에러 메시지 표시
-  // - Google 로그인 버튼 (loading 동안 비활성)
-  // ---------------------------------------------------------------------------
+  // 안내 문구 (인앱 브라우저에서만 노출)
+  const inAppNotice = useMemo(() => {
+    if (!isInApp) return null
+    return (
+      <div className={styles.error} style={{ marginBottom: 12 }}>
+        현재 네이버/카카오 등 <b>인앱 브라우저</b>에서는 Google 로그인이 차단될 수 있습니다.
+        <br />
+        우측 상단 메뉴에서 <b>“Safari(또는 Chrome)에서 열기”</b>로 이동 후 로그인해주세요.
+      </div>
+    )
+  }, [isInApp])
+
   return (
     <div className={styles.container}>
       <div className={styles.loginCard}>
         <h1 className={styles.logo}>neuseun</h1>
         <p className={styles.subtitle}>서비스 이용을 위해 로그인하세요</p>
 
+        {inAppNotice}
         {error && <div className={styles.error}>{error}</div>}
 
         <button
           className={styles.googleButton}
           onClick={handleGoogleLogin}
           disabled={loading}
+          aria-busy={loading}
         >
-          <svg className={styles.googleIcon} viewBox="0 0 24 24">
+          <svg className={styles.googleIcon} viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="#4285F4"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
