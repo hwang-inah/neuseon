@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  overflow-x: hidden; /* iOS 사파리 가로 스크롤 방지 */
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header {
@@ -21,10 +24,14 @@
 
 .services {
   display: flex;
+  flex-wrap: wrap; /* 모바일에서 줄바꿈 허용 */
   gap: 24px;
   justify-content: center;
   align-items: flex-start; /* stretch 대신 시작점 정렬 */
   margin-top: 56px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* 카드: 아주 약한 배경/테두리로 덩어리감 */
@@ -109,4 +116,55 @@
   border-radius: 16px;
   font-size: 18px;
   font-weight: 700;
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem; /* 좌우 padding 보장 */
+    min-height: auto;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .services {
+    flex-direction: column; /* 모바일에서 세로 배치 */
+    align-items: center; /* 중앙 정렬 */
+    gap: 20px;
+    margin-top: 2rem;
+    width: 100%;
+    padding: 0 0.5rem; /* 좌우 여백 추가 */
+  }
+
+  .serviceCard {
+    width: 100%; /* 모바일에서 전체 폭 사용 */
+    max-width: 400px; /* 최대 폭 제한 */
+    padding: 20px 16px;
+  }
+}
+
+/* 작은 모바일 (360px ~ 430px) */
+@media (max-width: 430px) {
+  .container {
+    padding: 1rem 0.75rem; /* 작은 화면에서도 좌우 padding 보장 */
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .services {
+    gap: 16px;
+    padding: 0 0.25rem;
+  }
+
+  .serviceCard {
+    padding: 18px 14px;
+  }
 }
