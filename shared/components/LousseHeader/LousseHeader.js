@@ -64,7 +64,6 @@ export default function LousseHeader() {
         <div className={styles.userSection}>
           {isAuthenticated ? (
             <>
-              <span className={styles.userEmail}>{user.email}</span>
               <button 
                 onClick={handleLogout} 
                 className={styles.logoutButton}

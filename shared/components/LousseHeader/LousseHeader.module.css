@@ -4,8 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: inherit; /* 전역 배경과 동일 */
+  border-bottom: none; /* 구분선 최소화 */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -22,6 +22,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: nowrap; /* 버튼/텍스트 줄바꿈 방지 */
 }
 
 .userEmail {
@@ -38,6 +39,11 @@
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .logoutButton:hover {
