@@ -93,7 +93,7 @@ export default function SalesTable({
   
           {onBulkInput && (
             <button onClick={onBulkInput} className={styles.bulkButton}>
-              📝 다중 입력
+              다중 입력
             </button>
           )}
   
