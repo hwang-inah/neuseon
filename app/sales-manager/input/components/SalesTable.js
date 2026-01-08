@@ -76,34 +76,40 @@ export default function SalesTable({
 
   return (
     <div>
-      <div className={styles.tableWrapper}>
-        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <FileUpload
-            onUpload={onFileUpload}
-            onDownloadCSV={onDownloadCSV}
-            onDownloadExcel={onDownloadExcel}
-          />
-          
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button onClick={() => setShowNewRow(true)} className={styles.addButton}>
-              + 행 추가
-            </button>
-            {onBulkInput && (
-              <button onClick={onBulkInput} className={styles.bulkButton}>
-                📝 다중 입력
-              </button>
-            )}
-            {data.length > 0 && (
-              <button 
-                onClick={() => onDeleteAll(selectedMonth)} 
-                className={styles.deleteAllButton}
-              >
-                전체 삭제
-              </button>
-            )}
+      {/* ✅ 상단 액션바: 스크롤과 분리 + sticky */}
+      <div className={styles.topActions}>
+        <div className={styles.rightActions}>
+          <div className={styles.actionBtn}>
+            <FileUpload
+              onUpload={onFileUpload}
+              onDownloadCSV={onDownloadCSV}
+              onDownloadExcel={onDownloadExcel}
+            />
           </div>
+        
+          <button onClick={() => setShowNewRow(true)} className={styles.addButton}>
+            + 행 추가
+          </button>
+  
+          {onBulkInput && (
+            <button onClick={onBulkInput} className={styles.bulkButton}>
+              📝 다중 입력
+            </button>
+          )}
+  
+          {data.length > 0 && (
+            <button
+              onClick={() => onDeleteAll(selectedMonth)}
+              className={styles.deleteAllButton}
+            >
+              전체 삭제
+            </button>
+          )}
         </div>
-
+      </div>
+  
+      {/* ✅ 테이블만 가로 스크롤 */}
+      <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -131,7 +137,7 @@ export default function SalesTable({
                 </td>
               </tr>
             )}
-
+  
             {showNewRow && (
               <TableRow
                 mode="new"
@@ -142,7 +148,7 @@ export default function SalesTable({
                 showDetailFields={showDetailFields}
               />
             )}
-
+  
             {data.slice(0, visibleCount).map(row => (
               <TableRow
                 key={row.rowId}
@@ -158,6 +164,7 @@ export default function SalesTable({
             ))}
           </tbody>
         </table>
+      </div>
 
         {/* 더보기 버튼 */}
         {data.length > visibleCount && (
@@ -193,6 +200,5 @@ export default function SalesTable({
           </div>
         )}
       </div>  
-    </div>
   )
 }

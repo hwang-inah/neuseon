@@ -45,6 +45,22 @@
   }
 }
 
+@media (max-width: 390px) {
+  .addButton,
+  .bulkButton,
+  .deleteAllButton,
+  .actionBtn button {
+    height: 30px;
+    min-height: 30px;
+    padding: 0 7px;
+    font-size: 11px;
+  }
+
+  .rightActions {
+    gap: 5px;
+  }
+}
+
 .table thead {
   background-color: #f8f9fa;
 }
@@ -60,31 +76,61 @@
 }
 
 .addButton {
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.95rem;
   background-color: #8B7355;
   color: #fff;
   border: none;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  min-height: 44px;
+  min-height: 38px;
 }
 
 .addButton:hover {
   background-color: #6d5a43;
 }
 
+/* 상단 액션바: 현재 위치(테이블 위)에서 sticky 고정 */
 .topActions {
+  position: sticky;
+  top: 0;            /* 헤더가 sticky면 56px 등으로 조정 */
+  z-index: 20;
+
   margin-bottom: 1rem;
+
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
+/* 오른쪽 버튼 그룹: 간격 통일(파일업로드-행추가 포함 통일은 전체 gap으로 해결) */
 .rightActions {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
+  gap: 6px;              /* 간격 축소 */
+  flex-wrap: nowrap;
+  overflow: hidden;      /* 스크롤 없애기 */
+}
+
+/* 각 버튼이 줄어들 수 있게 */
+.rightActions > * {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* 데스크탑: 버튼 그룹을 오른쪽 끝으로 */
+@media (min-width: 769px) {
+  .topActions {
+    justify-content: flex-end;  /* 공간 분배 안 하고 오른쪽 정렬 */
+    flex-wrap: nowrap;          /* 데스크에선 줄바꿈 안 하게 */
+  }
+
+  .rightActions {
+    margin-left: auto;          /* ✅ 오른쪽 끝으로 밀기 */
+  }
 }
 
 .secondaryButton {
@@ -102,29 +148,30 @@
   background-color: #faf6ef;
 }
 
+/* FileUpload 래퍼: 내부 버튼 스타일 통일 */
 .actionBtn button {
-  /* FileUpload 내부 button에 SalesTable 스타일 맞추기 */
-  padding: 0.5rem 0.9rem;
+  padding: 0.45rem 0.9rem;
   background-color: #fff;
   color: #6d5a43;
   border: 1px solid #d6c7b7;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;   /* ✅ 살짝 축소 */
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;  /* ✅ 줄바꿈 방지 */
+  min-height: 38px;
 }
 
 .actionBtn button:hover {
   background-color: #faf6ef;
 }
-
 .deleteAllButton {
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.95rem;
   background: white;
   border: 1px solid #dc2626;
   color: #dc2626;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -135,14 +182,21 @@
   color: white;
 }
 
+.addButton,
+.bulkButton,
+.deleteAllButton {
+  white-space: nowrap;  /* ✅ 텍스트 줄바꿈 방지 */
+  min-height: 38px;     /* ✅ 전체 버튼 높이 통일 */
+}
+
 /* 다중 입력 버튼 */
 .bulkButton {
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.95rem;
   background: #8B7355;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
