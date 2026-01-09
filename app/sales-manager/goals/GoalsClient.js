@@ -7,6 +7,8 @@ import { useSalesData } from '@/features/sales-manager/hooks/useSalesData'
 import { useGoals } from '@/features/sales-manager/hooks/useGoals'
 import GoalInput from '@/features/sales-manager/components/GoalInput'
 import GoalProgress from '@/features/sales-manager/components/GoalProgress'
+import { parseDate } from '@/shared/utils/dateUtils'
+import { calculateSum } from '@/features/sales-manager/utils/calculateUtils'
 import { debugLog } from '@/shared/utils/debug'
 import styles from './page.module.css'
 
@@ -60,14 +62,12 @@ export default function GoalsClient() {
       // 해당 월 데이터 필터링
       const monthStr = String(selectedMonth).padStart(2, '0')
       const monthSales = sales.filter(s => {
-        const [year, month] = s.date.split('-')
+        const { year, month } = parseDate(s.date)
         return year === String(selectedYear) && month === monthStr
       })
       
       // 매출 합계 계산 (type이 'income'인 것만)
-      const currentIncome = monthSales
-        .filter(s => s.type === 'income')
-        .reduce((sum, s) => sum + (Number(s.amount) || 0), 0)
+      const currentIncome = calculateSum(monthSales, 'income')
 
       debugLog('월별 인사이트:', { 
         selectedYear, 
@@ -115,7 +115,7 @@ export default function GoalsClient() {
     if (yearlyGoal && sales.length > 0) {
       // 해당 연도에서 선택된 월까지의 데이터 필터링
       const yearSales = sales.filter(s => {
-        const [year, month] = s.date.split('-')
+        const { year, month } = parseDate(s.date)
         const saleYear = Number(year)
         const saleMonth = Number(month)
         
@@ -124,9 +124,7 @@ export default function GoalsClient() {
       })
       
       // 매출 합계 계산 (type이 'income'인 것만)
-      const yearIncome = yearSales
-        .filter(s => s.type === 'income')
-        .reduce((sum, s) => sum + (Number(s.amount) || 0), 0)
+      const yearIncome = calculateSum(yearSales, 'income')
 
       debugLog('연간 인사이트:', { 
         selectedYear,

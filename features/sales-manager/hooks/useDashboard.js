@@ -2,17 +2,14 @@
 // 기간 선택, 데이터 필터링, 요약 계산
 
 import { useState, useMemo } from 'react'
+import { getCurrentDateInfo } from '@/shared/utils/dateUtils'
+import { calculateSum } from '../utils/calculateUtils'
 
 export function useDashboard(sales) {
   const [period, setPeriod] = useState('thisMonth') // thisMonth, lastMonth, thisYear
 
-  // 현재 날짜 기준 계산
-  const now = new Date()
-  const currentYear = now.getFullYear()
-  const currentMonth = String(now.getMonth() + 1).padStart(2, '0')
-  const lastMonth = now.getMonth() === 0 
-    ? { year: currentYear - 1, month: '12' }
-    : { year: currentYear, month: String(now.getMonth()).padStart(2, '0') }
+  // 현재 날짜 기준 계산 (통합 함수 사용)
+  const { currentYear, currentMonth, lastMonth } = getCurrentDateInfo()
 
   // 기간별 데이터 필터링
   const filteredSales = useMemo(() => {
@@ -35,18 +32,12 @@ export function useDashboard(sales) {
           return true
       }
     })
-  }, [sales, period])
+  }, [sales, period, currentYear, currentMonth, lastMonth.year, lastMonth.month])
 
   // 요약 계산
   const summary = useMemo(() => {
-    const income = filteredSales
-      .filter(s => s.type === 'income')
-      .reduce((sum, s) => sum + s.amount, 0)
-    
-    const expense = filteredSales
-      .filter(s => s.type === 'expense')
-      .reduce((sum, s) => sum + s.amount, 0)
-    
+    const income = calculateSum(filteredSales, 'income')
+    const expense = calculateSum(filteredSales, 'expense')
     const profit = income - expense
     const profitRate = income > 0 ? (profit / income) * 100 : 0
 
@@ -70,7 +61,7 @@ export function useDashboard(sales) {
       default:
         return ''
     }
-  }, [period])
+  }, [period, currentYear, currentMonth, lastMonth.year, lastMonth.month])
 
   // 그래프 데이터 생성
   const chartData = useMemo(() => {
@@ -129,7 +120,7 @@ export function useDashboard(sales) {
         }
       })
     }
-  }, [filteredSales, period])
+  }, [filteredSales, period, currentYear, currentMonth, lastMonth.year, lastMonth.month])
 
   // 비교 그래프 데이터 (이번 달 vs 지난 달)
   const compareData = useMemo(() => {
@@ -171,29 +162,21 @@ export function useDashboard(sales) {
         lastMonth: lastMonthDaily[day] || 0
       }
     })
-  }, [sales])
+  }, [sales, currentYear, currentMonth, lastMonth.year, lastMonth.month])
 
   // 인사이트 생성
   const insights = useMemo(() => {
     const result = []
 
     // 이번 달 데이터
-    const thisMonthIncome = sales
-      .filter(s => s.date.startsWith(`${currentYear}-${currentMonth}`) && s.type === 'income')
-      .reduce((sum, s) => sum + s.amount, 0)
-    
-    const thisMonthExpense = sales
-      .filter(s => s.date.startsWith(`${currentYear}-${currentMonth}`) && s.type === 'expense')
-      .reduce((sum, s) => sum + s.amount, 0)
+    const thisMonthSales = sales.filter(s => s.date.startsWith(`${currentYear}-${currentMonth}`))
+    const thisMonthIncome = calculateSum(thisMonthSales, 'income')
+    const thisMonthExpense = calculateSum(thisMonthSales, 'expense')
 
     // 지난 달 데이터
-    const lastMonthIncome = sales
-      .filter(s => s.date.startsWith(`${lastMonth.year}-${lastMonth.month}`) && s.type === 'income')
-      .reduce((sum, s) => sum + s.amount, 0)
-    
-    const lastMonthExpense = sales
-      .filter(s => s.date.startsWith(`${lastMonth.year}-${lastMonth.month}`) && s.type === 'expense')
-      .reduce((sum, s) => sum + s.amount, 0)
+    const lastMonthSales = sales.filter(s => s.date.startsWith(`${lastMonth.year}-${lastMonth.month}`))
+    const lastMonthIncome = calculateSum(lastMonthSales, 'income')
+    const lastMonthExpense = calculateSum(lastMonthSales, 'expense')
 
     // 인사이트 1: 이번 달 데이터 확인
     if (thisMonthIncome === 0 && thisMonthExpense === 0) {
@@ -252,7 +235,7 @@ export function useDashboard(sales) {
     }
 
     return result
-  }, [sales])
+  }, [sales, currentYear, currentMonth, lastMonth.year, lastMonth.month])
 
   return {
     period,

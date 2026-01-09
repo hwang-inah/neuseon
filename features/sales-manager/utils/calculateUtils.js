@@ -7,10 +7,16 @@ export function calculateGrowthRate(current, previous) {
 }
 
 // 기간별 합계 계산
+// 안전 처리: amount가 문자열이거나 null/undefined인 경우도 처리
 export function calculateSum(sales, type = null) {
+  if (!sales || sales.length === 0) return 0
+  
   return sales
     .filter(sale => type === null || sale.type === type)
-    .reduce((sum, sale) => sum + sale.amount, 0)
+    .reduce((sum, sale) => {
+      const amount = Number(sale?.amount) || 0
+      return sum + amount
+    }, 0)
 }
 
 // 순익 계산

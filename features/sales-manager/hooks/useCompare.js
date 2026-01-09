@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { calculateSum, calculateProfit, calculateGrowthRate } from '../utils/calculateUtils'
+import { parseDate } from '@/shared/utils/dateUtils'
 
 export function useCompare(sales) {
   const [periodType, setPeriodType] = useState('month') // 'month', 'year'
@@ -16,10 +17,10 @@ export function useCompare(sales) {
 
     sales.forEach(sale => {
       if (periodType === 'month') {
-        const [year, month] = sale.date.split('-')
+        const { year, month } = parseDate(sale.date)
         periods.add(`${year}-${month}`)
       } else if (periodType === 'year') {
-        const [year] = sale.date.split('-')
+        const { year } = parseDate(sale.date)
         periods.add(year)
       }
     })
@@ -79,7 +80,7 @@ export function useCompare(sales) {
     if (!period) return ''
 
     if (periodType === 'month') {
-      const [year, month] = period.split('-')
+      const { year, month } = parseDate(period)
       return `${year}년 ${parseInt(month)}월`
     } else if (periodType === 'year') {
       return `${period}년`

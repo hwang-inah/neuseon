@@ -1,11 +1,12 @@
 // 비로그인 사용자용 데모 데이터
 // 현재 날짜 기준으로 생성
+
+import { getCurrentDateInfo } from '@/shared/utils/dateUtils'
+
+const { currentYear, currentMonth, lastMonth } = getCurrentDateInfo()
+
+// 2달 전 계산 (데모 데이터용으로 여기서만 사용)
 const now = new Date()
-const currentYear = now.getFullYear()
-const currentMonth = String(now.getMonth() + 1).padStart(2, '0')
-const lastMonth = now.getMonth() === 0 
-  ? { year: currentYear - 1, month: '12' }
-  : { year: currentYear, month: String(now.getMonth()).padStart(2, '0') }
 const twoMonthsAgo = now.getMonth() <= 1
   ? { year: currentYear - 1, month: String(12 + now.getMonth() - 1).padStart(2, '0') }
   : { year: currentYear, month: String(now.getMonth() - 1).padStart(2, '0') }

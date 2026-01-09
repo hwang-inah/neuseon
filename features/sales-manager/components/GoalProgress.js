@@ -3,6 +3,7 @@
 import { useMemo } from 'react'
 import { formatCurrency } from '@/shared/utils/formatUtils'
 import { calculateSum, calculateProfit } from '@/features/sales-manager/utils/calculateUtils'
+import { parseDateAsNumbers } from '@/shared/utils/dateUtils'
 import styles from './GoalProgress.module.css'
 
 export default function GoalProgress({ 
@@ -23,13 +24,13 @@ export default function GoalProgress({
     if (goalType === 'monthly') {
       // 선택된 년/월 데이터만
       filteredSales = sales.filter(s => {
-        const [saleYear, saleMonth] = s.date.split('-').map(Number)
+        const { year: saleYear, month: saleMonth } = parseDateAsNumbers(s.date)
         return saleYear === year && saleMonth === month
       })
     } else {
       // 선택된 연도 데이터만
       filteredSales = sales.filter(s => {
-        const [saleYear] = s.date.split('-').map(Number)
+        const { year: saleYear } = parseDateAsNumbers(s.date)
         return saleYear === year
       })
     }

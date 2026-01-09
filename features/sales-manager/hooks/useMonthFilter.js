@@ -2,6 +2,7 @@
 // 연도/월 선택, 사용 가능한 기간 추출 로직
 
 import { useState, useEffect } from 'react'
+import { parseDate } from '@/shared/utils/dateUtils'
 
 export function useMonthFilter(data, isInitialLoad = true) {
   const [selectedMonth, setSelectedMonth] = useState(null)
@@ -34,7 +35,7 @@ export function useMonthFilter(data, isInitialLoad = true) {
     const months = {}
     
     data.forEach(row => {
-      const [year, month] = row.date.split('-')
+      const { year, month } = parseDate(row.date)
       if (!months[year]) {
         months[year] = new Set()
       }
@@ -63,7 +64,7 @@ export function useMonthFilter(data, isInitialLoad = true) {
 
   // 선택된 월 유효성 검사
   const validateSelectedMonth = (months) => {
-    const [year, month] = selectedMonth.split('-')
+    const { year, month } = parseDate(selectedMonth)
     
     if (!months[year] || !months[year].includes(month)) {
       selectLatestMonth(months)

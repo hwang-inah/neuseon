@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { getCurrentYear, getCurrentMonth } from '@/shared/utils/dateUtils'
 
 export function useGoals() {
   const [goals, setGoals] = useState([])
@@ -56,16 +57,14 @@ export function useGoals() {
 
   // 현재 월 목표 조회
   const getCurrentMonthGoal = () => {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth() + 1
+    const year = getCurrentYear()
+    const month = getCurrentMonth()
     return getGoal('monthly', year, month)
   }
 
   // 현재 연도 목표 조회
   const getCurrentYearGoal = () => {
-    const now = new Date()
-    const year = now.getFullYear()
+    const year = getCurrentYear()
     return getGoal('yearly', year, null)
   }
 
