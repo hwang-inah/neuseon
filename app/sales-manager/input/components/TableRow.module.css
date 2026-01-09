@@ -1,7 +1,7 @@
 .input {
   width: 100%;
   padding: 0.4rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 0.9rem;
   text-align: center;
@@ -9,7 +9,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #8B7355;
+  border-color: var(--service-primary);
 }
 
 .newRow {
@@ -18,12 +18,12 @@
 
 .totalAmount {
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .editButton {
   padding: 0.35rem 0.7rem;
-  background-color: #2e7d32;
+  background-color: var(--status-success);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -38,7 +38,7 @@
 
 .saveButton {
   padding: 0.35rem 0.7rem;
-  background-color: #2e7d32;
+  background-color: var(--status-success);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -53,7 +53,7 @@
 
 .deleteButton {
   padding: 0.35rem 0.7rem;
-  background-color: #d32f2f;
+  background-color: var(--status-danger);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -68,8 +68,8 @@
 .cancelButton {
   padding: 0.35rem 0.7rem;
   background-color: #fff;
-  color: #666;
-  border: 1px solid #ddd;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 0.85rem;
   cursor: pointer;

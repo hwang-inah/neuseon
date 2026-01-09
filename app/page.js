@@ -3,6 +3,20 @@
 import Link from 'next/link'
 import styles from './page.module.css'
 
+// SEO 메타데이터
+export const metadata = {
+  title: 'NEUSEUN | 쌓이면, 보이게 됩니다',
+  description: '매출관리, 대화정리 등 개인 비즈니스를 위한 스마트 도구',
+  openGraph: {
+    title: 'NEUSEUN',
+    description: '쌓이면, 보이게 됩니다.',
+    type: 'website',
+  },
+}
+
+// SSG 강제 설정 (정적 페이지로 빌드 시 생성)
+export const dynamic = 'force-static'
+
 export default function Home() {
   return (
     <main className={styles.container}>

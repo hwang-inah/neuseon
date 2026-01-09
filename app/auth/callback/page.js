@@ -4,6 +4,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { debugError } from '@/shared/utils/debug'
 
 export default function AuthCallbackPage() {
   const router = useRouter()
@@ -31,7 +32,7 @@ export default function AuthCallbackPage() {
         // 1) 우선 현재 세션을 바로 확인
         const { data, error } = await supabase.auth.getSession()
         if (error) {
-          console.error('콜백: getSession 오류', error)
+          debugError('콜백: getSession 오류', error)
         }
 
         if (data?.session) {
@@ -47,11 +48,11 @@ export default function AuthCallbackPage() {
 
         // 3) 무한 대기 방지 타임아웃 (예: 6초)
         timeoutId = window.setTimeout(() => {
-          console.error('콜백: 세션 대기 타임아웃')
+          debugError('콜백: 세션 대기 타임아웃')
           finish(false)
         }, 6000)
       } catch (err) {
-        console.error('콜백 오류:', err)
+        debugError('콜백 오류:', err)
         finish(false)
       }
     }

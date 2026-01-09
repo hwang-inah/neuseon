@@ -12,14 +12,14 @@
 .resultTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .aiMode {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .cards {
@@ -57,9 +57,9 @@
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
@@ -67,7 +67,7 @@
 
 .copyButton:hover {
   background-color: #e8e8e8;
-  border-color: #ccc;
+  border-color: var(--border-light);
 }
 
 .copyButton:active {

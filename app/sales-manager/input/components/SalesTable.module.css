@@ -17,7 +17,7 @@
   padding: 0.6rem;
   text-align: center;
   font-weight: 600;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   border: 1px solid #e0e0e0;
 }
@@ -62,7 +62,7 @@
 }
 
 .table thead {
-  background-color: #f8f9fa;
+  background-color: var(--bg-secondary);
 }
 
 .table tr:hover {
@@ -71,13 +71,13 @@
 
 .emptyMessage {
   text-align: center;
-  color: #999;
+  color: var(--text-tertiary);
   padding: 2rem 0;
 }
 
 .addButton {
   padding: 0.45rem 0.95rem;
-  background-color: #8B7355;
+  background-color: var(--service-primary);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -88,7 +88,7 @@
 }
 
 .addButton:hover {
-  background-color: #6d5a43;
+  background-color: var(--service-primary-dark);
 }
 
 /* 상단 액션바: 현재 위치(테이블 위)에서 sticky 고정 */
@@ -168,8 +168,8 @@
 .deleteAllButton {
   padding: 0.45rem 0.95rem;
   background: white;
-  border: 1px solid #dc2626;
-  color: #dc2626;
+  border: 1px solid var(--status-danger);
+  color: var(--status-danger);
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 500;
@@ -178,7 +178,7 @@
 }
 
 .deleteAllButton:hover {
-  background: #dc2626;
+  background: var(--status-danger);
   color: white;
 }
 
@@ -192,7 +192,7 @@
 /* 다중 입력 버튼 */
 .bulkButton {
   padding: 0.45rem 0.95rem;
-  background: #8B7355;
+  background: var(--service-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -203,5 +203,5 @@
 }
 
 .bulkButton:hover {
-  background: #6F5B44;
+  background: var(--service-primary-dark);
 }

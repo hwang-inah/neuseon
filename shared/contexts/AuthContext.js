@@ -3,7 +3,7 @@
 
 'use client'
 
-import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useRef, useMemo } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useToast } from '@/shared/hooks/useToast'
 
@@ -81,12 +81,13 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  const value = {
+  // value 객체를 메모이제이션하여 불필요한 리렌더링 방지
+  const value = useMemo(() => ({
     session,
     user: session?.user ?? null,
     isAuthenticated: !!session?.user,
     loading
-  }
+  }), [session, loading])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

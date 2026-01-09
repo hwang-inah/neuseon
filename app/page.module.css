@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: var(--spacing-xl);
   overflow-x: hidden; /* iOS 사파리 가로 스크롤 방지 */
   width: 100%;
   box-sizing: border-box;
@@ -12,14 +12,14 @@
 
 .header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: var(--spacing-xxl);
 }
 
 .title {
   font-size: 4rem;
   font-weight: 700;
-  margin: 0 0 1rem 0;
-  color: #333;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-primary);
 }
 
 .services {
@@ -39,7 +39,7 @@
   width: 300px;
   padding: 22px 18px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.55);
+  background: var(--bg-white);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 
@@ -56,7 +56,7 @@
   font-size: 15px;
   font-weight: 600;
   line-height: 1.35;
-  color: #3b3b3b;
+  color: var(--text-primary);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -75,7 +75,7 @@
   align-items: center;
   justify-content: center;
 
-  background-color: #8B7355;
+  background-color: var(--brand-primary);
   color: #fff;
   border-radius: 16px;
   font-size: 18px;
@@ -100,7 +100,7 @@
 }
 
 .serviceCardDisabled .serviceCopy {
-  color: #8c8c8c;
+  color: var(--text-tertiary);
 }
 
 .serviceDisabled {
@@ -111,8 +111,8 @@
   align-items: center;
   justify-content: center;
 
-  background: #dedede;
-  color: #8c8c8c;
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
   border-radius: 16px;
   font-size: 18px;
   font-weight: 700;

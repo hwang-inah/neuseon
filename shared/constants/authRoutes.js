@@ -12,8 +12,11 @@
  * - loading 체크가 추가되어 새로고침 시에도 정상 작동
  */
 export const PROTECTED_PATH_PREFIXES = [
-  '/sales-manager' // 대시보드 포함, 모든 하위 경로 보호
-  // 대화정리 서비스가 보호 페이지가 되면 아래 주석을 해제하세요:
+  '/sales-manager/input',
+  '/sales-manager/compare', 
+  '/sales-manager/goals'
+  // 대시보드(/sales-manager)는 데모 모드로 공개, 나머지 페이지만 로그인 필요
+  // 대화정리 서비스도 보호하려면 아래 추가:
   // '/talk'
 ]
 

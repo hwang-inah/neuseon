@@ -20,6 +20,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { debugError } from '@/shared/utils/debug'
 import styles from './page.module.css'
 
 // -----------------------------------------------------------------------------
@@ -140,7 +141,7 @@ export default function LoginClient() {
 
       if (error) throw error
     } catch (err) {
-      console.error('로그인 오류:', err)
+      debugError('로그인 오류:', err)
       setError(err?.message ?? '로그인 중 오류가 발생했습니다.')
       setLoading(false)
     }

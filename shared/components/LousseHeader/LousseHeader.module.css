@@ -1,11 +1,13 @@
 .header {
   height: 56px;
-  padding: 0 2rem;
+  padding: 0 var(--spacing-xl);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: inherit; /* 전역 배경과 동일 */
-  border-bottom: none; /* 구분선 최소화 */
+  background: rgba(255, 255, 255, 0.5); /* 흰색 50% 투명도 */
+  backdrop-filter: blur(10px); /* 흐림 효과 */
+  -webkit-backdrop-filter: blur(10px); /* Safari 지원 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08); /* 연한 테두리 */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -14,14 +16,14 @@
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #8B7355;
+  color: var(--brand-primary);
   text-decoration: none;
 }
 
 .userSection {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--spacing-md);
   flex-wrap: nowrap; /* 버튼/텍스트 줄바꿈 방지 */
 }
 
@@ -31,10 +33,10 @@
 }
 
 .logoutButton {
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
   background: white;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   font-size: 0.875rem;
   cursor: pointer;
@@ -48,13 +50,13 @@
 
 .logoutButton:hover {
   background: #f9fafb;
-  color: #374151;
-  border-color: #d1d5db;
+  color: var(--text-primary);
+  border-color: var(--border);
 }
 
 .loginButton {
-  padding: 0.5rem 1rem;
-  background: #8B7355;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--brand-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -65,13 +67,13 @@
   transition: background-color 0.2s;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   min-width: 80px;
   justify-content: center;
 }
 
 .loginButton:hover:not(.loading) {
-  background: #7a6347;
+  background: var(--brand-primary-dark);
 }
 
 .loginButton.loading {

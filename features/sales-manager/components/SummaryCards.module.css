@@ -20,7 +20,7 @@
 
 .label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -28,15 +28,15 @@
 .amount {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .profit {
-  color: #059669;
+  color: var(--status-success);
 }
 
 .loss {
-  color: #dc2626;
+  color: var(--status-danger);
 }
 
 /* 태블릿 */
@@ -47,7 +47,7 @@
 }
 
 /* 모바일 */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
   }

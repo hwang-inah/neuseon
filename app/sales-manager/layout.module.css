@@ -2,37 +2,63 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  
+  /* ===== 매출관리 서비스 변수 - 숫자를 있는 그대로 보여주기 ===== */
+  
+  /* 서비스 브랜드 (느슨 톤 유지, 미묘한 차이 가능) */
+  --service-primary: var(--brand-primary);        /* 기본값은 느슨 브랜드 */
+  --service-primary-dark: var(--brand-primary-dark);
+  
+  /* 데이터 표시 - 명확하되 부드럽게 */
+  --data-text-primary: var(--text-primary);       /* 숫자 표시 */
+  --data-text-secondary: var(--text-secondary);
+  --data-text-tertiary: var(--text-tertiary);
+  
+  /* 카드/섹션 - 여백과 생각할 공간 */
+  --card-bg: var(--bg-white);
+  --section-bg: white;
+  
+  /* 상태 - 경고하지 않고 보여주기 */
+  --data-income: var(--status-success);           /* 수익 (부드러운 초록) */
+  --data-expense: var(--status-danger);           /* 지출 (부드러운 빨강) */
+  
+  /* 컨테이너 */
+  --service-container: var(--container-wide);
+  
+  /* 하위 호환성 (기존 변수명 유지) */
+  --color-primary: var(--service-primary);
+  --color-primary-dark: var(--service-primary-dark);
 }
 
 /* 서브 네비 (2차 네비) */
 .subNav {
   background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
-  padding: 0.75rem 2rem;
+  padding: 0.75rem var(--spacing-xl);
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: var(--spacing-xl);
   position: sticky;
   top: 56px; /* 전역 헤더 높이 */
   z-index: 99;
 }
 
 .subNavLink {
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 0.9375rem;
-  padding: 0.5rem 0;
+  padding: var(--spacing-sm) 0;
   text-decoration: none;
   transition: color 0.2s;
   position: relative;
 }
 
 .subNavLink:hover {
-  color: #8B7355;
+  color: var(--service-primary);
 }
 
 .subNavLinkActive {
-  color: #8B7355;
+  color: var(--service-primary);
   font-weight: 600;
 }
 
@@ -43,7 +69,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #8B7355;
+  background-color: var(--service-primary);
 }
 
 .main {
@@ -53,19 +79,19 @@
 .userSection {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .userEmail {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .logoutButton {
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
   background: white;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   font-size: 0.875rem;
   cursor: pointer;
@@ -73,9 +99,9 @@
 }
 
 .logoutButton:hover {
-  background: #f9fafb;
-  color: #374151;
-  border-color: #d1d5db;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border);
 }
 
 /* 로딩 스피너 */
@@ -85,14 +111,14 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .spinner {
   width: 40px;
   height: 40px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #8B7355;
+  border-top: 4px solid var(--service-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -103,6 +129,6 @@
 }
 
 .loadingContainer p {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 1rem;
 }

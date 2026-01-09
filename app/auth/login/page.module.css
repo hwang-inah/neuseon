@@ -9,7 +9,7 @@
 .loginCard {
   background: white;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-light);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 2.5rem 2rem;
   width: 100%;
@@ -20,19 +20,19 @@
 .logo {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #8B7355;
+  color: var(--brand-primary);
   margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   margin: 0 0 2.5rem 0;
 }
 
 .error {
-  background: #fee;
-  color: #c00;
+  background: var(--status-danger-bg);
+  color: var(--status-danger-text);
   padding: 0.75rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -47,18 +47,18 @@
   gap: 0.75rem;
   padding: 0.875rem 1.5rem;
   background: white;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-light);
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .googleButton:hover:not(:disabled) {
-  background: #f9fafb;
-  border-color: #d1d5db;
+  background: var(--bg-secondary);
+  border-color: var(--border);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -76,6 +76,6 @@
 .terms {
   margin-top: 2rem;
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--text-tertiary);
   line-height: 1.5;
 }

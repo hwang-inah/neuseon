@@ -9,7 +9,7 @@
 .title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -31,13 +31,13 @@
 .label {
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .percentage {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #8B7355;
+  color: var(--service-primary);
 }
 
 .amounts {
@@ -50,37 +50,37 @@
 .current {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .divider {
   font-size: 1rem;
-  color: #9ca3af;
+  color: var(--text-tertiary);
 }
 
 .goal {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .progressBar {
   width: 100%;
   height: 12px;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   border-radius: 6px;
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #8B7355, #a89176);
+  background: linear-gradient(90deg, var(--service-primary), #a89176);
   border-radius: 6px;
   transition: width 0.3s ease;
 }
 
 /* 일 평균 통계 */
 .dailyStats {
-  background: #f9fafb;
+  background: var(--bg-secondary);
   border-radius: 8px;
   padding: 1rem;
   display: grid;
@@ -97,13 +97,13 @@
 
 .dailyLabel {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .dailyValue {
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -113,7 +113,7 @@
   border-radius: 12px;
   padding: 3rem;
   text-align: center;
-  color: #9ca3af;
+  color: var(--text-tertiary);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
   min-height: 200px;
@@ -123,7 +123,7 @@
 }
 
 /* 반응형 */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .dailyStats {
     grid-template-columns: 1fr;
   }

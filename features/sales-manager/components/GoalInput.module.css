@@ -9,7 +9,7 @@
 .title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -21,14 +21,14 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
 .input {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
@@ -36,21 +36,21 @@
 
 .input:focus {
   outline: none;
-  border-color: #8B7355;
+  border-color: var(--service-primary);
 }
 
 .preview {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .saveButton {
   width: 100%;
   padding: 0.75rem 1.5rem;
-  background: #8B7355;
+  background: var(--service-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -61,7 +61,7 @@
 }
 
 .saveButton:hover:not(:disabled) {
-  background: #6d5a42;
+  background: var(--service-primary-dark);
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -81,8 +81,8 @@
 .deleteButton {
   padding: 0.5rem 1rem;
   background: white;
-  color: #dc2626;
-  border: 1px solid #dc2626;
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger);
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -91,7 +91,7 @@
 }
 
 .deleteButton:hover:not(:disabled) {
-  background: #dc2626;
+  background: var(--status-danger);
   color: white;
 }
 

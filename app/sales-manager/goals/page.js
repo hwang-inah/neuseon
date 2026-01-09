@@ -3,6 +3,14 @@
 
 import GoalsClient from './GoalsClient'
 
+// SEO 메타데이터 (개인 데이터 페이지이므로 검색엔진 인덱싱 방지)
+export const metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
+
 export default function GoalsPage() {
   return <GoalsClient />
 }

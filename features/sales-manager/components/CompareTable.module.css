@@ -18,7 +18,7 @@
 .title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -28,7 +28,7 @@
 
 .select {
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   font-size: 0.875rem;
   background: white;
@@ -52,9 +52,9 @@
   text-align: left;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #6b7280;
-  border-bottom: 2px solid #e5e7eb;
-  background: #f9fafb;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border-light);
+  background: var(--bg-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -62,19 +62,19 @@
 
 .table tbody td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-light);
   font-size: 0.875rem;
 }
 
 .keyCell {
   font-weight: 500;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 /* ✅ 금액: 한 줄 유지(실폰 대응) */
 .amountCell {
   text-align: right;
-  color: #374151;
+  color: var(--text-primary);
   white-space: nowrap !important;
 }
 
@@ -97,20 +97,20 @@
 }
 
 .positive {
-  color: #059669;
+  color: var(--status-success);
 }
 
 .negative {
-  color: #dc2626;
+  color: var(--status-danger);
 }
 
 .neutral {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .empty {
   text-align: center;
-  color: #9ca3af;
+  color: var(--text-tertiary);
   padding: 2rem !important;
 }
 

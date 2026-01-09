@@ -1,6 +1,6 @@
 // 매출/지출 CRUD
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/shared/contexts/AuthContext'
 
@@ -10,8 +10,8 @@ export function useSalesData() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // 데이터 가져오기
-  const fetchSales = async () => {
+  // 데이터 가져오기 (useCallback으로 메모이제이션 - AuthContext의 user가 안정적으로 유지되므로 안전)
+  const fetchSales = useCallback(async () => {
     try {
       setLoading(true)
       
@@ -29,14 +29,14 @@ export function useSalesData() {
 
       if (error) throw error
       
-      setSales([...(data || [])])
+      setSales(data || [])
     } catch (err) {
       setError(err.message)
       console.error('Error fetching sales:', err)
     } finally {
       setLoading(false)
     }
-  }
+  }, [user])
 
   // 추가 (단일)
   const addSale = async (saleData) => {
@@ -188,7 +188,7 @@ export function useSalesData() {
 
   useEffect(() => {
     fetchSales()
-  }, [user]) // user 변경 시 데이터 다시 가져오기
+  }, [fetchSales]) // fetchSales 변경 시 데이터 다시 가져오기 (user 변경 시에만 재생성됨)
 
   return {
     sales,

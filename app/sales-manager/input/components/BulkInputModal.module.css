@@ -21,7 +21,7 @@
   background: white;
   border-radius: 12px;
   width: 90%;
-  max-width: 900px;
+  max-width: var(--container-narrow);
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -45,20 +45,20 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .subtitle {
   font-size: 0.875rem;
   font-weight: 400;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-left: 0.5rem;
 }
 
@@ -66,7 +66,7 @@
   background: none;
   border: none;
   font-size: 2rem;
-  color: #9ca3af;
+  color: var(--text-tertiary);
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -78,7 +78,7 @@
 }
 
 .closeButton:hover {
-  color: #4b5563;
+  color: var(--text-secondary);
 }
 
 .content {
@@ -93,7 +93,7 @@
 .tableWrapper {
   flex: 1;
   overflow-y: auto;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .table thead {
-  background: #f9fafb;
+  background: var(--bg-secondary);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -114,23 +114,23 @@
   padding: 0.75rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-light);
 }
 
 .table td {
   padding: 0.5rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--bg-secondary);
 }
 
 .table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--bg-secondary);
 }
 
 .input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   font-size: 0.875rem;
   transition: border-color 0.2s;
@@ -138,7 +138,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #8B7355;
+  border-color: var(--service-primary);
   box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
 }
 
@@ -148,7 +148,7 @@
 
 .removeButton {
   background: #fee;
-  color: #dc2626;
+  color: var(--status-danger);
   border: 1px solid #fecaca;
   border-radius: 4px;
   width: 28px;
@@ -163,14 +163,14 @@
 
 .removeButton:hover {
   background: #fecaca;
-  border-color: #dc2626;
+  border-color: var(--status-danger);
 }
 
 .addRowButton {
   padding: 0.75rem 1.5rem;
   background: white;
-  color: #8B7355;
-  border: 2px dashed #8B7355;
+  color: var(--service-primary);
+  border: 2px dashed var(--service-primary);
   border-radius: 8px;
   font-size: 0.9375rem;
   font-weight: 500;
@@ -180,8 +180,8 @@
 
 .addRowButton:hover {
   background: #f5f1ed;
-  border-color: #6F5B44;
-  color: #6F5B44;
+  border-color: var(--service-primary-dark);
+  color: var(--service-primary-dark);
 }
 
 .footer {
@@ -189,7 +189,7 @@
   justify-content: flex-end;
   gap: 0.75rem;
   padding: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-light);
 }
 
 .cancelButton,
@@ -204,21 +204,21 @@
 
 .cancelButton {
   background: white;
-  color: #6b7280;
-  border: 1px solid #d1d5db;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
 }
 
 .cancelButton:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
+  background: var(--bg-secondary);
+  border-color: var(--text-tertiary);
 }
 
 .saveButton {
-  background: #8B7355;
+  background: var(--service-primary);
   color: white;
   border: none;
 }
 
 .saveButton:hover {
-  background: #6F5B44;
+  background: var(--service-primary-dark);
 }

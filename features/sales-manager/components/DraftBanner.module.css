@@ -53,13 +53,13 @@
 }
 
 .restoreButton {
-  background: #8B7355;
+  background: var(--service-primary);
   color: white;
   border: none;
 }
 
 .restoreButton:hover {
-  background: #6F5B44;
+  background: var(--service-primary-dark);
 }
 
 .dismissButton {

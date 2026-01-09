@@ -9,7 +9,7 @@
 .title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
@@ -48,20 +48,20 @@
 .lockTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
 
 .lockDescription {
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
 
 .subscribeButton {
   padding: 0.75rem 2rem;
-  background: #8B7355;
+  background: var(--service-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -72,7 +72,7 @@
 }
 
 .subscribeButton:hover {
-  background: #6d5a43;
+  background: var(--service-primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
 }
